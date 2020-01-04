@@ -1,9 +1,9 @@
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import thunk, { ThunkMiddleware } from "redux-thunk";
 import logger from "redux-logger";
-import sessionReducer from "../reducers/session";
-import groupsReducer from "../reducers/groups";
-import { AppActions } from "../types/actions";
+import sessionReducer from "./reducers/session";
+import groupsReducer from "./reducers/groups";
+import { AppActions } from "./types/actions";
 
 export const rootReducer = combineReducers({
   session: sessionReducer,
@@ -21,8 +21,9 @@ export type AppState = ReturnType<typeof rootReducer>;
 */
 
 const composeEnhancers =
-  typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+  typeof window === "object" &&
+  (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
     : compose;
 
 export const store = createStore(

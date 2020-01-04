@@ -1,18 +1,27 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { StyleSheet, Text, View } from "react-native";
+import { ClientContext } from "../../client";
 
-import {registerUser} from "../../actions/session";
+import { WobblyClient } from "../../client";
 
 class Landing extends Component {
+  static contextType = ClientContext;
   componentDidMount() {
-      this.props.registerUser("gabby_test@example.com");
+    const client: WobblyClient = this.context;
+    client
+      .connect("test@localhost", "mypass")
+      .then(() => {
+        console.warn("connected!");
+      })
+      .catch(() => {
+        console.warn("failed to connect!");
+      });
   }
-  
+
   render() {
     return (
       <View style={styles.container}>
-        <Text>Open up App.tsx to start working on your app!</Text>
+        <Text>Welcome to Wobbly!</Text>
       </View>
     );
   }
@@ -27,4 +36,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(null, {registerUser})(Landing)
+export default Landing;
