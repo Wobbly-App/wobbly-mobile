@@ -28,7 +28,7 @@ export const registerUser = (email: string) => (
         return dispatch({
           type: SESSION_REGISTER_FAIL,
           errorMessage: err.message
-        });        
+        });
       }
     });
 };
