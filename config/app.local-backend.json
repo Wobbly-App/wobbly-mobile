@@ -27,7 +27,7 @@
         "supportsTablet": true
       },
       "extra": {
-          "baseUrl": "https://wobbly.gigalixirapp.com"
+          "baseUrl": "https://wobbly.gigalixirapp.com/api/v1"
       }
     }
   }
