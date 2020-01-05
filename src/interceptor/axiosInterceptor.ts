@@ -1,5 +1,5 @@
 import axios from "axios";
-import asyncStorageService from "../helpers/asyncStorageService";
+import asyncStorageService from "../services/asyncStorageService";
 import Constants from "expo-constants";
 
 axios.defaults.baseURL = Constants.manifest.extra.baseUrl;
