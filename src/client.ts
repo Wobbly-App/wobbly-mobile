@@ -1,44 +1,59 @@
-import { Strophe } from "strophe.js";
 import React from "react";
+import { client, xml, XmppClient } from "@xmpp/client";
 
 export class WobblyClient {
-  private readonly conn: Strophe.Connection;
-  public status: Strophe.Status;
+  private client: XmppClient;
 
-  public constructor(service: string) {
-    this.conn = new Strophe.Connection(service);
-    this.status = Strophe.Status.DISCONNECTED;
+  public constructor(
+    service: string,
+    domain: string,
+    resource: string,
+    username: string,
+    password: string
+  ) {
+    this.client = client({
+      service,
+      domain,
+      resource,
+      username,
+      password
+    });
+
+    this.client.on("error", err => {
+      console.error(err);
+    });
+
+    this.client.on("offline", () => {
+      console.log("offline");
+    });
+
+    // this.client.on("stanza", async stanza => {
+    //   if (stanza.is("message")) {
+    //     await this.client.send(xml("presence", { type: "unavailable" }));
+    //     await this.client.stop();
+    //   }
+    // });
+
+    this.client.on("online", async address => {
+      console.log("Online!");
+      // Makes itself available
+      await this.client.send(xml("presence"));
+
+      // Sends a chat message to itself
+      const message = xml(
+        "message",
+        { type: "chat", to: address },
+        xml("body", {}, "hello world")
+      );
+      await this.client.send(message);
+    });
+
+    this.client.on("status", status => {
+      console.debug(status);
+    });
   }
 
-  /**
-   * Connect to the service.
-   */
-  public connect = (jid: string, password: string): Promise<Strophe.Status> => {
-    return new Promise((resolve, reject) => {
-      const handleConnect = (status: Strophe.Status): void => {
-        this.status = status;
-        console.warn(status);
-        switch (status) {
-          case Strophe.Status.CONNECTED:
-            resolve(status);
-            break;
-          // Do nothing for intermediate states
-          case Strophe.Status.AUTHENTICATING:
-            break;
-          case Strophe.Status.CONNECTING:
-            break;
-          case Strophe.Status.DISCONNECTING:
-            break;
-          // Other statuses: something went wrong
-          default:
-            reject(status);
-        }
-      };
-      this.conn.connect(jid, password, handleConnect);
-    });
+  public start = () => {
+    this.client.start().catch(console.error);
   };
 }
-
-export const ClientContext = React.createContext(
-  (undefined as any) as WobblyClient
-);

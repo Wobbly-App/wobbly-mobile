@@ -21,7 +21,7 @@
       "supportsTablet": true
     },
     "extra": {
-      "backendUrl": "https://wobbly.gigalixirapp.com/api/v1"
+      "backendUrl": "xmpp.wobbly.app"
     }
   }
 }
