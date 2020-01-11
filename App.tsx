@@ -1,23 +1,36 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Constants from "expo-constants";
-import Axios from 'axios';
+import React, { useState, Dispatch, SetStateAction, useEffect } from "react";
+import { Provider } from "react-redux";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-    </View>
-  );
+import { store } from "./src/store/configureStore";
+import Landing from "./src/components/screens/Landing";
+import { WobblyClient } from "./src/client";
+import ClientContext from "./src/ClientContext";
+
+interface IAppState {
+  client?: WobblyClient;
+}
+class App extends React.Component {
+  public constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  public render() {
+    const updateClient = (c: WobblyClient) => this.setClient(c);
+    return (
+      <ClientContext.Provider
+        value={{ state: this.state, setClient: updateClient }}
+      >
+        <Provider store={store}>
+          <Landing />
+        </Provider>
+      </ClientContext.Provider>
+    );
+  }
+
+  private setClient = (client: WobblyClient) => {
+    this.setState({ client });
+  };
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-
-console.log(Axios.defaults);
+export default App;

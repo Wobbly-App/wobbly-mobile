@@ -6,6 +6,9 @@
     "moduleResolution": "node",
     "noEmit": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true
-  }
+    "resolveJsonModule": true,
+    "strictNullChecks": true,
+    "typeRoots": ["./node_modules/@types", "./types"]
+  },
+  "includes": ["src/**/*.{ts,tsx}", "types/**/*.d.ts"]
 }
