@@ -1,27 +1,31 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { ClientContext } from "../../client";
+import { StyleSheet, Text, View, Button } from "react-native";
+import ClientContext from "../../ClientContext";
 
 import { WobblyClient } from "../../client";
 
 class Landing extends Component {
   static contextType = ClientContext;
   componentDidMount() {
-    const client: WobblyClient = this.context;
-    client
-      .connect("test@localhost", "mypass")
-      .then(() => {
-        console.warn("connected!");
-      })
-      .catch(() => {
-        console.warn("failed to connect!");
-      });
+    const { setClient } = this.context;
+    setClient(
+      new WobblyClient(
+        "wss://xmpp.wobbly.app:5443/ws",
+        "xmpp.wobbly.app",
+        "wobbly-1",
+        "dev",
+        "Cee9ech4Ia6wupho"
+      )
+    );
   }
 
   render() {
+    const { state } = this.context;
+    const start = state.client && state.client.start;
     return (
       <View style={styles.container}>
         <Text>Welcome to Wobbly!</Text>
+        <Button onPress={start} title="Start" />
       </View>
     );
   }
