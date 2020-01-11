@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
-import ClientContext from "../../ClientContext";
+import ClientContext from "../../app/ClientContext";
 
-import { WobblyClient } from "../../client";
+import WobblyClient from "../../common/WobblyClient";
+
+const Landing: React.FC = ({ navigation }) => {};
 
 class Landing extends Component {
   static contextType = ClientContext;
