@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import WobblyClient from "../../common/WobblyClient";
+import { IAppThunk } from "../store";
 
 interface IMessage {
   id: string;
@@ -11,11 +12,11 @@ interface IMessage {
   // delivered: boolean;
   error: boolean;
 }
-interface IChatsState {
+interface IMessagesState {
   byId: { [id: string]: IMessage };
   allIds: string[];
 }
-const initialState: IChatsState = {
+const initialState: IMessagesState = {
   byId: {},
   allIds: []
 };
@@ -24,13 +25,13 @@ const { actions, reducer } = createSlice({
   name: "messages",
   initialState,
   reducers: {
-    "messages/messageAdded": (state, action: PayloadAction<IMessage>) => ({
+    messageAdded: (state, action: PayloadAction<IMessage>) => ({
       ...state,
       byId: { ...state.byId, [action.payload.id]: action.payload },
       allIds: [...state.allIds, action.payload.id]
     }),
     // Used e.g. for updating the state of a message from "sent = false" to "sent = true"
-    "messages/messageUpdated": (state, action: PayloadAction<IMessage>) => ({
+    messageUpdated: (state, action: PayloadAction<IMessage>) => ({
       ...state,
       byId: { ...state.byId, [action.payload.id]: action.payload }
     })
@@ -42,8 +43,8 @@ export const sendMessage = (
   client: WobblyClient,
   recipientJid: string,
   text: string
-) => dispatch => {
-  const message = {
+): IAppThunk => async dispatch => {
+  const message: IMessage = {
     id: "TODO",
     fromJid: client.jid,
     toJid: recipientJid,
@@ -52,16 +53,14 @@ export const sendMessage = (
     sent: false,
     error: false
   };
-  actions["messages/messageAdded"](message);
-  client
-    .sendChat(recipientJid, text)
-    .then(() => {
-      actions["messages/messageUpdated"]({ ...message, sent: true });
-    })
-    .catch(() => {
-      actions["messages/messageUpdated"]({ ...message, error: true });
-    });
+  dispatch(messageAdded(message));
+  try {
+    await client.sendChat(recipientJid, text);
+    dispatch(messageUpdated({ ...message, sent: true }));
+  } catch {
+    dispatch(messageUpdated({ ...message, error: true }));
+  }
 };
 
-module.exports = actions;
+export const { messageAdded, messageUpdated } = actions;
 export default reducer;

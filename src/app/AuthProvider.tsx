@@ -1,21 +1,20 @@
 import React, { useEffect } from "react";
-import SecureStore from "expo-secure-store";
-import * as authActions from "../redux/modules/auth";
+import { loadCredentials } from "../redux/modules/auth";
+import { connect, ConnectedProps } from "react-redux";
 
-const AuthProvider: React.FC = () => {
+const connector = connect(undefined, { loadCredentials });
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+const AuthProvider: React.FC<PropsFromRedux> = ({
+  loadCredentials,
+  children
+}) => {
   useEffect(() => {
-    const bootstrapAsync = async () => {
-      let credentials;
-      try {
-        const jid = await SecureStore.getItemAsync("jid");
-        const password = await SecureStore.getItemAsync("password");
-      } catch (e) {
-        // Failed to get token...
-      }
-    };
+    console.log("Loading credentials");
+    loadCredentials();
   });
+
+  return <>{children}</>;
 };
 
-const mapDispatchToProps = {authActions["auth/receivedCredentials"]};
-
-export default AuthProvider;
+export default connector(AuthProvider);

@@ -2,18 +2,16 @@ import React from "react";
 import { Provider } from "react-redux";
 
 import store from "./src/redux/store";
-import Landing from "./src/components/screens/Landing";
 import WobblyClient from "./src/common/WobblyClient";
 import ClientContext from "./src/app/ClientContext";
+import Navigation from "./src/app/Navigation";
 
 interface IAppState {
   client?: WobblyClient;
 }
 /**
  * The main class of our app.
- * We don't want to put our `WobblyClient` into the redux tree
- * because it's not serializable. Instead, it's kept in a React context.
- * Because it won't be instantiated till a user logs in, this context
+ * Because the WobblyClient won't be instantiated till a user logs in, the ClientContext
  * also includes a function for setting the client.
  */
 class App extends React.Component<IAppState> {
@@ -22,8 +20,6 @@ class App extends React.Component<IAppState> {
     this.state = {};
   }
 
-  public componentDidMount() {}
-
   public render() {
     const updateClient = (c: WobblyClient) => this.setClient(c);
     return (
@@ -31,7 +27,7 @@ class App extends React.Component<IAppState> {
         value={{ state: this.state, setClient: updateClient }}
       >
         <Provider store={store}>
-          <Landing />
+          <Navigation />
         </Provider>
       </ClientContext.Provider>
     );

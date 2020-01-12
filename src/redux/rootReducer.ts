@@ -1,6 +1,7 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import messages from "./modules/messages";
+import auth from "./modules/auth";
 
-const rootReducer = combineReducers({ messages });
-export type RootState = ReturnType<typeof rootReducer>;
+const rootReducer = combineReducers({ messages, auth });
+export type IRootState = ReturnType<typeof rootReducer>;
 export default rootReducer;
