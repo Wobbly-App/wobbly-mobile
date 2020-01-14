@@ -3,9 +3,9 @@ import React, { useEffect } from "react";
 import { SplashScreen } from "expo";
 
 export default () => {
-  useEffect(() => {
-    SplashScreen.preventAutoHide();
-  }, []);
+  // useEffect(() => {
+  //   SplashScreen.preventAutoHide();
+  // }, []);
   return (
     <View style={style.wrapper}>
       <Image

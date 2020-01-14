@@ -29,7 +29,6 @@ export default class {
     });
 
     this.client.on("online", async address => {
-      console.log("Online!");
       // Makes itself available
       await this.client.send(xml("presence"));
     });
@@ -50,6 +49,10 @@ export default class {
 
   public start = () => {
     this.client.start().catch(console.error);
+  };
+
+  public stop = () => {
+    this.client.stop();
   };
 
   public sendChat = async (recipientJid: string, text: string) => {

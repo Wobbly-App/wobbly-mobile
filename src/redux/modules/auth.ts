@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import SecureStore from "expo-secure-store";
+import * as SecureStore from "expo-secure-store";
 import { IAppThunk } from "../store";
 import {
   SECURE_STORAGE_JID,
@@ -51,16 +51,11 @@ export const saveCredentials = (
   jid: string,
   password: string
 ): IAppThunk => async dispatch => {
-  console.log("auth: sc");
   try {
-    console.log("auth: saving jid");
     await SecureStore.setItemAsync(SECURE_STORAGE_JID, jid);
-    console.log("auth: saving pass");
     await SecureStore.setItemAsync(SECURE_STORAGE_PASSWORD, password);
-    console.log("auth: dispatching success");
     dispatch(receivedCredentials({ jid, password }));
   } catch {
-    console.log("auth: dispatching failure");
     dispatch(emptyCredentials());
   }
 };
