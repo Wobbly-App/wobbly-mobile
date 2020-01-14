@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { jid } from "@xmpp/client";
 import WobblyClient from "../common/WobblyClient";
 import { loadCredentials } from "../redux/modules/auth";
+import { messageAdded, IMessage } from "../redux/modules/messages";
 import { connect, ConnectedProps } from "react-redux";
 
 export const ClientContext = React.createContext<WobblyClient | undefined>(
@@ -9,7 +10,8 @@ export const ClientContext = React.createContext<WobblyClient | undefined>(
 );
 
 const mapDispatch = {
-  loadCredentials
+  loadCredentials,
+  messageAdded
 };
 const connector = connect(undefined, mapDispatch);
 type PropsFromRedux = ConnectedProps<typeof connector>;
@@ -28,7 +30,8 @@ const ClientProvider: React.FC<IClientProviderProps & PropsFromRedux> = ({
   loadCredentials,
   children,
   userJid,
-  userPassword
+  userPassword,
+  messageAdded
 }) => {
   // On mount, try to load existing credentials
   useEffect(() => {
@@ -49,13 +52,18 @@ const ClientProvider: React.FC<IClientProviderProps & PropsFromRedux> = ({
       }
     } else {
       // We have credentials, so initialize a client and set it in the state.
+      const mh = (msg: IMessage) => {
+        console.log("message handler fired!");
+        messageAdded(msg);
+      };
       const jidObj = jid(userJid);
       const newClient = new WobblyClient(
         `wss://${jidObj.domain}:5443/ws`,
         jidObj.domain,
         "wobbly-1", // resource. TODO: generate randomly and save
         jidObj.local,
-        userPassword
+        userPassword,
+        mh
       );
       newClient.start();
       setClient(newClient);

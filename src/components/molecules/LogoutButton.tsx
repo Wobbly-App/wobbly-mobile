@@ -1,18 +1,15 @@
 import React from "react";
 import { connect, ConnectedProps } from "react-redux";
-import { emptyCredentials } from "../../redux/modules/auth";
+import { logout } from "../../redux/modules/auth";
 import { Button } from "react-native";
 
 const mapDispatch = {
-  emptyCredentials
+  logout
 };
 const connector = connect(undefined, mapDispatch);
 type PropsFromRedux = ConnectedProps<typeof connector>;
-const LogoutButton: React.FC<PropsFromRedux> = ({ emptyCredentials }) => {
-  const logoutFlow = () => {
-    emptyCredentials();
-  };
-  return <Button onPress={logoutFlow} title="Logout" />;
+const LogoutButton: React.FC<PropsFromRedux> = ({ logout }) => {
+  return <Button onPress={logout} title="Logout" />;
 };
 
 export default connector(LogoutButton);

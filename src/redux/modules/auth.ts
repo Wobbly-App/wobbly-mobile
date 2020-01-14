@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import * as SecureStore from "expo-secure-store";
 import { IAppThunk } from "../store";
-import {
-  SECURE_STORAGE_JID,
-  SECURE_STORAGE_PASSWORD
-} from "../../common/constants";
+
+const SECURE_STORAGE_JID = "jid";
+const SECURE_STORAGE_PASSWORD = "password";
 
 interface ICredentials {
   jid: string;
@@ -24,7 +23,7 @@ const { reducer, actions } = createSlice({
       credentials: action.payload,
       isLoading: false
     }),
-    emptyCredentials: state => ({
+    clearedCredentials: state => ({
       ...state,
       credentials: undefined,
       isLoading: false
@@ -43,11 +42,11 @@ export const loadCredentials = (): IAppThunk => async dispatch => {
     dispatch(receivedCredentials({ jid, password }));
   } catch {
     // No credentials found
-    dispatch(emptyCredentials());
+    dispatch(clearedCredentials());
   }
 };
 
-export const saveCredentials = (
+export const login = (
   jid: string,
   password: string
 ): IAppThunk => async dispatch => {
@@ -56,9 +55,19 @@ export const saveCredentials = (
     await SecureStore.setItemAsync(SECURE_STORAGE_PASSWORD, password);
     dispatch(receivedCredentials({ jid, password }));
   } catch {
-    dispatch(emptyCredentials());
+    dispatch(clearedCredentials());
   }
 };
 
-export const { receivedCredentials, emptyCredentials } = actions;
+export const logout = (): IAppThunk => async dispatch => {
+  try {
+    await SecureStore.deleteItemAsync(SECURE_STORAGE_JID);
+    await SecureStore.deleteItemAsync(SECURE_STORAGE_PASSWORD);
+    dispatch(clearedCredentials());
+  } catch {
+    // TODO: handle logout failure
+  }
+};
+
+export const { receivedCredentials, clearedCredentials } = actions;
 export default reducer;

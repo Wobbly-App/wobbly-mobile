@@ -1055,15 +1055,25 @@
     wcwidth "^1.0.1"
     ws "^1.1.0"
 
-"@react-native-community/masked-view@^0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.5.tgz#25421be6cd943a4b1660b62cfbcd45be8891462c"
-  integrity sha512-Lj1DzfCmW0f4HnmHtEuX8Yy2f7cnUA8r5KGGUuDDGtQt1so6QJkKeUmsnLo2zYDtsF8due6hvIL06Vdo5xxuLQ==
+"@react-native-community/masked-view@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.6.tgz#c7f2ac187c1f25aa8c30d11baa8f4398eca3bb84"
+  integrity sha512-PpMoeXwPUoldCRKDuSi+zK5rT+sJTW6ri6RdGPkSKRzU77Q1d9IaR0O5IKvBj0XSdL3p+dcOa05gk35aGDffBQ==
 
 "@react-navigation/core@^5.0.0-alpha.32":
   version "5.0.0-alpha.32"
   resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-5.0.0-alpha.32.tgz#b7c4f68e405080062df95936998be8e44ceb3e2a"
   integrity sha512-HCPNXPoTzE8IOsexrjqr14F/w1B5C9ZoTdeokKphK7oxvMrt8ceDkb1AR7KmNT2zEXbzt3FZ9LW0V+Y9sGY2LA==
+  dependencies:
+    escape-string-regexp "^2.0.0"
+    query-string "^6.9.0"
+    shortid "^2.2.15"
+    use-subscription "^1.3.0"
+
+"@react-navigation/core@^5.0.0-alpha.35":
+  version "5.0.0-alpha.35"
+  resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-5.0.0-alpha.35.tgz#169d96443e72c08a1f9d5c30cfd911910306d560"
+  integrity sha512-i7Hti3gk8dDa/QSWg12lxo4B5Q5pY5/16qq4C1ISxU10iYaQUR/P4DrPg5mGB45Fl5u3UZ6mafwpPwsdlAOl1g==
   dependencies:
     escape-string-regexp "^2.0.0"
     query-string "^6.9.0"
@@ -1094,12 +1104,20 @@
     "@react-navigation/core" "^5.0.0-alpha.32"
     shortid "^2.2.15"
 
-"@react-navigation/stack@^5.0.0-alpha.58":
-  version "5.0.0-alpha.58"
-  resolved "https://registry.yarnpkg.com/@react-navigation/stack/-/stack-5.0.0-alpha.58.tgz#4c2dbd2356ea7c5cc6a934a79ef9c353bdac9b55"
-  integrity sha512-oHwG5D6dZLoB7jZBxlKuIzXaNcFTwnyL948UNbQaNBBLj1umW3B9Wn3ekoRUhBY40P/wcCQkGnUARTzH1c1dhw==
+"@react-navigation/routers@^5.0.0-alpha.25":
+  version "5.0.0-alpha.25"
+  resolved "https://registry.yarnpkg.com/@react-navigation/routers/-/routers-5.0.0-alpha.25.tgz#752fa6d36fdb00a151599d32adb0f6cf799a8ab8"
+  integrity sha512-xZDUa8AL/fE3pItBI2QCv0yGqVBlxdOanfpvGng/m8OoLF2aqj9s6hxjBkVjyjdOg6RoT9bz0GlJIjAXcM9ReA==
   dependencies:
-    "@react-navigation/routers" "^5.0.0-alpha.22"
+    "@react-navigation/core" "^5.0.0-alpha.35"
+    shortid "^2.2.15"
+
+"@react-navigation/stack@^5.0.0-alpha.61":
+  version "5.0.0-alpha.61"
+  resolved "https://registry.yarnpkg.com/@react-navigation/stack/-/stack-5.0.0-alpha.61.tgz#cb9e4bf4c04e2b5bb4e6d1f4495dbaba143a30e9"
+  integrity sha512-o/l4RJJtXuDbXOwkgupZApddLBCdh/2H9tGCA1/RaVnG3Wz3F2R4+rTU4ABIsU4wAg008iyrVda/MfGWj0CcQA==
+  dependencies:
+    "@react-navigation/routers" "^5.0.0-alpha.25"
     color "^3.1.2"
     react-native-iphone-x-helper "^1.2.1"
 
@@ -4614,7 +4632,7 @@ react-native-lightbox@^0.8.1:
 
 "react-native-parsed-text@https://github.com/EvanBacon/react-native-parsed-text.git":
   version "0.0.22"
-  resolved "https://github.com/EvanBacon/react-native-parsed-text.git#f55c4713c62961f13a2eec99cbc1ec619615ee72"
+  resolved "https://github.com/EvanBacon/react-native-parsed-text.git#c909f64ee437796fd1b047edd73146fc89edb796"
   dependencies:
     prop-types "^15.5.10"
 

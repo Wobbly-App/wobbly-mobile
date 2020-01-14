@@ -1,4 +1,6 @@
 import { client, xml, XmppClient, XmppStatus } from "@xmpp/client";
+import debug from "@xmpp/debug";
+import { IMessage } from "../redux/modules/messages";
 
 export default class {
   private client: XmppClient;
@@ -12,7 +14,7 @@ export default class {
     resource: string,
     username: string,
     password: string,
-    messageHandler?: (msg: any) => void
+    messageHandler?: (msg: IMessage) => void
   ) {
     this.client = client({
       service,
@@ -21,6 +23,7 @@ export default class {
       username,
       password
     });
+    debug(this.client, true);
     this.status = "disconnect";
     this.jid = `${username}@${domain}`;
 
@@ -31,6 +34,9 @@ export default class {
     this.client.on("online", async address => {
       // Makes itself available
       await this.client.send(xml("presence"));
+
+      // Send msg to self
+      await this.sendChat("dev@xmpp.wobbly.app", "hello from wobbly");
     });
 
     this.client.on("status", status => {
@@ -39,10 +45,19 @@ export default class {
 
     if (!!messageHandler) {
       this.client.on("stanza", stanza => {
-        if (!stanza.is("message")) {
-          return;
+        if (stanza.is("message")) {
+          console.log(stanza);
+          const message: IMessage = {
+            id: stanza.getChild("stanza-id").attrs.id,
+            fromJid: stanza.attrs.from,
+            toJid: stanza.attrs.to,
+            text: stanza.getChildText("body"),
+            timestamp: Date.now(),
+            sent: true,
+            error: false
+          };
+          messageHandler(message);
         }
-        messageHandler(stanza);
       });
     }
   }
@@ -61,6 +76,7 @@ export default class {
       { type: "chat", to: recipientJid },
       xml("body", {}, text)
     );
+    console.log("sending...");
     await this.client.send(message);
   };
 }
