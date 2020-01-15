@@ -39,7 +39,7 @@
     "expo-constants": "~8.0.0",
     "expo-secure-store": "~8.0.0",
     "react": "~16.9.0",
-    "react-dom": "~16.9.0",
+    "react-dom": "~16.12.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
     "react-native-gesture-handler": "~1.5.0",
     "react-native-gifted-chat": "^0.13.0",
