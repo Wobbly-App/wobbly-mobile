@@ -13,6 +13,19 @@
     "lint:fix": "yarn lint --fix",
     "ci": "yarn typecheck && yarn pretty && yarn lint"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "post-merge": "yarn install"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "yarn pretty",
+      "yarn lint:fix",
+      "git add"
+    ]
+  },
   "dependencies": {
     "@react-native-community/async-storage": "^1.7.1",
     "@react-native-community/masked-view": "^0.1.6",
@@ -54,6 +67,8 @@
     "eslint-plugin-import": "^2.20.0",
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^2.3.0",
+    "husky": "^4.0.10",
+    "lint-staged": "^9.5.0",
     "prettier": "1.19.1",
     "typescript": "^3.7.4"
   },
