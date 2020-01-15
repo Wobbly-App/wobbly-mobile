@@ -1,17 +1,19 @@
-import React from "react";
-import { IRootState } from "../redux/rootReducer";
-import { connect, ConnectedProps } from "react-redux";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { createStackNavigator } from "@react-navigation/stack";
-import SplashScreen from "../components/screens/SplashScreen";
-import ChatScreen from "../components/screens/ChatScreen";
-import { NavigationNativeContainer } from "@react-navigation/native";
-import LoginScreen from "../components/screens/LoginScreen";
-import ClientProvider from "./ClientProvider";
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationNativeContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
+import { ConnectedProps, connect } from 'react-redux';
 
-const mapState = (state: IRootState) => ({
+import ChatScreen from '../components/screens/ChatScreen';
+import LoginScreen from '../components/screens/LoginScreen';
+import WobblySplashScreen from '../components/screens/WobblySplashScreen';
+import { RootState } from '../redux/rootReducer';
+
+import ClientProvider from './ClientProvider';
+
+const mapState = (state: RootState) => ({
   isLoadingAuth: state.auth.isLoading,
-  credentials: state.auth.credentials
+  credentials: state.auth.credentials,
 });
 const connector = connect(mapState);
 type PropsFromRedux = ConnectedProps<typeof connector>;
@@ -32,24 +34,28 @@ const HomeNav = () => (
  */
 const Navigation: React.FC<PropsFromRedux> = ({
   isLoadingAuth,
-  credentials
+  credentials,
 }) => {
+  let component;
+  if (isLoadingAuth) {
+    component = <WobblySplashScreen />;
+  } else if (!credentials) {
+    component = <LoginScreen />;
+  } else {
+    component = (
+      <NavigationNativeContainer>
+        <RootDrawer.Navigator drawerType="slide">
+          <RootDrawer.Screen name="Home" component={HomeNav} />
+        </RootDrawer.Navigator>
+      </NavigationNativeContainer>
+    );
+  }
   return (
     <ClientProvider
       userJid={credentials && credentials.jid}
       userPassword={credentials && credentials.password}
     >
-      {isLoadingAuth ? (
-        <SplashScreen />
-      ) : !credentials ? (
-        <LoginScreen />
-      ) : (
-        <NavigationNativeContainer>
-          <RootDrawer.Navigator drawerType={"slide"}>
-            <RootDrawer.Screen name="Home" component={HomeNav} />
-          </RootDrawer.Navigator>
-        </NavigationNativeContainer>
-      )}
+      {component}
     </ClientProvider>
   );
 };

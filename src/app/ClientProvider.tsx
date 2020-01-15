@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { jid } from "@xmpp/client";
-import WobblyClient from "../common/WobblyClient";
-import { loadCredentials } from "../redux/modules/auth";
-import { messageAdded, IMessage } from "../redux/modules/messages";
-import { connect, ConnectedProps } from "react-redux";
+import { jid } from '@xmpp/client';
+import React, { useEffect, useState } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+
+import WobblyClient from '../common/WobblyClient';
+import { loadCredentials } from '../redux/modules/auth';
+import { messageAdded, Message } from '../redux/modules/messages';
 
 export const ClientContext = React.createContext<WobblyClient | undefined>(
-  undefined
+  undefined,
 );
 
 const mapDispatch = {
   loadCredentials,
-  messageAdded
+  messageAdded,
 };
 const connector = connect(undefined, mapDispatch);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-interface IClientProviderProps {
+interface ClientProviderProps {
   userJid?: string;
   userPassword?: string;
   children: React.ReactNode;
@@ -26,17 +27,17 @@ interface IClientProviderProps {
  * because it's not serializable. Instead, it's kept in a React context
  * through this component.
  */
-const ClientProvider: React.FC<IClientProviderProps & PropsFromRedux> = ({
+const ClientProvider: React.FC<ClientProviderProps & PropsFromRedux> = ({
   loadCredentials,
   children,
   userJid,
   userPassword,
-  messageAdded
+  messageAdded,
 }) => {
   // On mount, try to load existing credentials
   useEffect(() => {
     loadCredentials();
-  }, []);
+  }, [loadCredentials]);
 
   // Our XMPP client is stored in the state here, and child components can access
   // it through a React context.
@@ -46,28 +47,28 @@ const ClientProvider: React.FC<IClientProviderProps & PropsFromRedux> = ({
     // If we were not passed either of these components, it could be because
     // the user signed out. Clear the client.
     if (!userJid || !userPassword) {
-      if (!!client) {
+      if (client) {
         client.stop();
         setClient(undefined);
       }
     } else {
       // We have credentials, so initialize a client and set it in the state.
-      const mh = (msg: IMessage) => {
+      const mh = (msg: Message): void => {
         messageAdded(msg);
       };
       const jidObj = jid(userJid);
       const newClient = new WobblyClient(
         `wss://${jidObj.domain}:5443/ws`,
         jidObj.domain,
-        "wobbly-1", // resource. TODO: generate randomly and save
+        'wobbly-1', // resource. TODO: generate randomly and save
         jidObj.local,
         userPassword,
-        mh
+        mh,
       );
       newClient.start();
       setClient(newClient);
     }
-  }, [userJid, userPassword]);
+  }, [client, messageAdded, userJid, userPassword]);
 
   return (
     <ClientContext.Provider value={client}>{children}</ClientContext.Provider>

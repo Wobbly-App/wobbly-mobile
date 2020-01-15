@@ -1,11 +1,13 @@
-import { client, xml, XmppClient, XmppStatus } from "@xmpp/client";
-import debug from "@xmpp/debug";
-import { IMessage } from "../redux/modules/messages";
+import { XmppClient, XmppStatus, client, xml } from '@xmpp/client';
+import debug from '@xmpp/debug';
+
+import { Message } from '../redux/modules/messages';
 
 export default class {
   private client: XmppClient;
 
   public status: XmppStatus;
+
   public jid: string;
 
   public constructor(
@@ -14,46 +16,46 @@ export default class {
     resource: string,
     username: string,
     password: string,
-    messageHandler?: (msg: IMessage) => void
+    messageHandler?: (msg: Message) => void,
   ) {
     this.client = client({
       service,
       domain,
       resource,
       username,
-      password
+      password,
     });
     debug(this.client, true);
-    this.status = "disconnect";
+    this.status = 'disconnect';
     this.jid = `${username}@${domain}`;
 
-    this.client.on("error", err => {
+    this.client.on('error', err => {
       console.error(err);
     });
 
-    this.client.on("online", async address => {
+    this.client.on('online', async () => {
       // Makes itself available
-      await this.client.send(xml("presence"));
+      await this.client.send(xml('presence'));
 
       // Send msg to self
-      await this.sendChat("dev@xmpp.wobbly.app", "hello from wobbly");
+      await this.sendChat('dev@xmpp.wobbly.app', 'hello from wobbly');
     });
 
-    this.client.on("status", status => {
+    this.client.on('status', status => {
       this.status = status;
     });
 
-    if (!!messageHandler) {
-      this.client.on("stanza", stanza => {
-        if (stanza.is("message")) {
-          const message: IMessage = {
-            id: stanza.getChild("stanza-id").attrs.id,
+    if (messageHandler) {
+      this.client.on('stanza', stanza => {
+        if (stanza.is('message')) {
+          const message: Message = {
+            id: stanza.getChild('stanza-id').attrs.id,
             fromJid: stanza.attrs.from,
             toJid: stanza.attrs.to,
-            text: stanza.getChildText("body"),
+            text: stanza.getChildText('body'),
             timestamp: Date.now(),
             sent: true,
-            error: false
+            error: false,
           };
           messageHandler(message);
         }
@@ -62,7 +64,9 @@ export default class {
   }
 
   public start = () => {
-    this.client.start().catch(console.error);
+    this.client.start().catch(e => {
+      console.error(e);
+    });
   };
 
   public stop = () => {
@@ -71,9 +75,9 @@ export default class {
 
   public sendChat = async (recipientJid: string, text: string) => {
     const message = xml(
-      "message",
-      { type: "chat", to: recipientJid },
-      xml("body", {}, text)
+      'message',
+      { type: 'chat', to: recipientJid },
+      xml('body', {}, text),
     );
     await this.client.send(message);
   };

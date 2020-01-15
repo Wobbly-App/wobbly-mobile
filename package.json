@@ -5,7 +5,13 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "typecheck": "yarn tsc --noEmit",
+    "pretty": "prettier --check \"src/**/*.{ts,tsx,js,jsx}\"",
+    "pretty:fix": "prettier --write \"src/**/*.{ts,tsx,js,jsx}\"",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx ./",
+    "lint:fix": "yarn lint --fix",
+    "ci": "yarn typecheck && yarn pretty && yarn lint"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.7.1",
@@ -40,7 +46,15 @@
     "@types/react": "^16.9.17",
     "@types/react-native": "^0.60.27",
     "@types/react-redux": "^7.1.5",
+    "@typescript-eslint/eslint-plugin": "^2.16.0",
+    "@typescript-eslint/parser": "^2.16.0",
     "babel-preset-expo": "~8.0.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
+    "prettier": "1.19.1",
     "typescript": "^3.7.4"
   },
   "private": true
