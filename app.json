@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Wobbly App",
+    "name": "Wobbly",
     "slug": "wobbly-mobile",
     "privacy": "public",
     "sdkVersion": "36.0.0",
@@ -10,7 +10,7 @@
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {
