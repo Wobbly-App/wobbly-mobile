@@ -1,5 +1,5 @@
-declare module "@xmpp/client" {
-  import { EventEmitter } from "react-native";
+declare module '@xmpp/client' {
+  import { EventEmitter } from 'react-native';
   export function client(options: {
     service?: string;
     domain?: string;
@@ -8,29 +8,32 @@ declare module "@xmpp/client" {
     password?: string;
     credentials?: (
       auth: (params: { username: string; password: string }) => any,
-      mechanism: string
+      mechanism: string,
     ) => any;
   }): XmppClient;
 
   type XmppStatus =
-    | "online"
-    | "offline"
-    | "connecting"
-    | "connect"
-    | "opening"
-    | "open"
-    | "closing"
-    | "close"
-    | "disconnecting"
-    | "disconnect";
+    | 'online'
+    | 'offline'
+    | 'connecting'
+    | 'connect'
+    | 'opening'
+    | 'open'
+    | 'closing'
+    | 'close'
+    | 'disconnecting'
+    | 'disconnect';
 
-  type XmppEvent = "status" | "error" | "stanza" | "online" | "offline";
+  type XmppEvent = 'status' | 'error' | 'stanza' | 'online' | 'offline';
 
   type XmppClient = EventEmitter & {
     start: () => Promise<any>;
     stop: () => void;
     send: (...args: any[]) => Promise<any>;
-    on: (event: XmppEvent, callback?: (p?: any) => void) => void;
+    on: (
+      event: XmppEvent,
+      callback?: (p?: any) => void | Promise<void>,
+    ) => void;
   };
   export function jid(...args: any[]): any;
 
