@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
-    "@types/node": "^13.1.2",
+    "@types/node": "^13.1.7",
     "@types/react": "^16.9.17",
     "@types/react-native": "^0.60.30",
     "@types/react-redux": "^7.1.5",
