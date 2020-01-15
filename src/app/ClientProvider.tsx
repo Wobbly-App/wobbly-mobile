@@ -53,7 +53,6 @@ const ClientProvider: React.FC<IClientProviderProps & PropsFromRedux> = ({
     } else {
       // We have credentials, so initialize a client and set it in the state.
       const mh = (msg: IMessage) => {
-        console.log("message handler fired!");
         messageAdded(msg);
       };
       const jidObj = jid(userJid);
@@ -70,10 +69,8 @@ const ClientProvider: React.FC<IClientProviderProps & PropsFromRedux> = ({
     }
   }, [userJid, userPassword]);
 
-  if (!!client) {
-    <ClientContext.Provider value={client}>{children}</ClientContext.Provider>;
-  }
-
-  return <>{children}</>;
+  return (
+    <ClientContext.Provider value={client}>{children}</ClientContext.Provider>
+  );
 };
 export default connector(ClientProvider);

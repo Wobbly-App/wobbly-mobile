@@ -45,7 +45,7 @@ const Navigation: React.FC<PropsFromRedux> = ({
         <LoginScreen />
       ) : (
         <NavigationNativeContainer>
-          <RootDrawer.Navigator>
+          <RootDrawer.Navigator drawerType={"slide"}>
             <RootDrawer.Screen name="Home" component={HomeNav} />
           </RootDrawer.Navigator>
         </NavigationNativeContainer>

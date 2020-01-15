@@ -46,7 +46,6 @@ export default class {
     if (!!messageHandler) {
       this.client.on("stanza", stanza => {
         if (stanza.is("message")) {
-          console.log(stanza);
           const message: IMessage = {
             id: stanza.getChild("stanza-id").attrs.id,
             fromJid: stanza.attrs.from,
@@ -76,7 +75,6 @@ export default class {
       { type: "chat", to: recipientJid },
       xml("body", {}, text)
     );
-    console.log("sending...");
     await this.client.send(message);
   };
 }

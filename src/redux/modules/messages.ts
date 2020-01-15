@@ -25,14 +25,11 @@ const { actions, reducer } = createSlice({
   name: "messages",
   initialState,
   reducers: {
-    messageAdded: (state, action: PayloadAction<IMessage>) => {
-      console.log(action);
-      return {
-        ...state,
-        byId: { ...state.byId, [action.payload.id]: action.payload },
-        allIds: [...state.allIds, action.payload.id]
-      };
-    },
+    messageAdded: (state, action: PayloadAction<IMessage>) => ({
+      ...state,
+      byId: { ...state.byId, [action.payload.id]: action.payload },
+      allIds: [action.payload.id, ...state.allIds]
+    }),
     // Used e.g. for updating the state of a message from "sent = false" to "sent = true"
     messageUpdated: (state, action: PayloadAction<IMessage>) => ({
       ...state,
