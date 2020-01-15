@@ -29,12 +29,12 @@ declare module "@xmpp/client" {
   type XmppClient = EventEmitter & {
     start: () => Promise<any>;
     stop: () => void;
-    send: (...args: any) => Promise<any>;
+    send: (...args: any[]) => Promise<any>;
     on: (event: XmppEvent, callback?: (p?: any) => void) => void;
   };
-  export function jid(): any;
+  export function jid(...args: any[]): any;
 
-  export function xml(...args: any[]): any;
+  export function xml(tag: string, attributes?: Object, ...children: any): any;
 
   export namespace jid {
     class JID {
