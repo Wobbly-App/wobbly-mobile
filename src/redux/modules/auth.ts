@@ -1,35 +1,39 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import * as SecureStore from "expo-secure-store";
-import { IAppThunk } from "../store";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import * as SecureStore from 'expo-secure-store';
 
-const SECURE_STORAGE_JID = "jid";
-const SECURE_STORAGE_PASSWORD = "password";
+import { IAppThunk } from '../store';
 
-interface ICredentials {
+const SECURE_STORAGE_JID = 'jid';
+const SECURE_STORAGE_PASSWORD = 'password';
+
+interface Credentials {
   jid: string;
   password: string;
 }
-interface IAuthState {
-  credentials?: ICredentials;
+interface AuthState {
+  credentials?: Credentials;
   isLoading: boolean;
 }
-const initialState: IAuthState = { isLoading: true };
+const initialState: AuthState = { isLoading: true };
 const { reducer, actions } = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
-    receivedCredentials: (state, action: PayloadAction<ICredentials>) => ({
+    receivedCredentials: (state, action: PayloadAction<Credentials>) => ({
       ...state,
       credentials: action.payload,
-      isLoading: false
+      isLoading: false,
     }),
     clearedCredentials: state => ({
       ...state,
       credentials: undefined,
-      isLoading: false
-    })
-  }
+      isLoading: false,
+    }),
+  },
 });
+
+export const { receivedCredentials, clearedCredentials } = actions;
+export default reducer;
 
 // Thunks
 export const loadCredentials = (): IAppThunk => async dispatch => {
@@ -48,7 +52,7 @@ export const loadCredentials = (): IAppThunk => async dispatch => {
 
 export const login = (
   jid: string,
-  password: string
+  password: string,
 ): IAppThunk => async dispatch => {
   try {
     await SecureStore.setItemAsync(SECURE_STORAGE_JID, jid);
@@ -68,6 +72,3 @@ export const logout = (): IAppThunk => async dispatch => {
     // TODO: handle logout failure
   }
 };
-
-export const { receivedCredentials, clearedCredentials } = actions;
-export default reducer;

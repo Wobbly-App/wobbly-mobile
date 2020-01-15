@@ -1,13 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
-import { connect, ConnectedProps } from "react-redux";
-import { IRootState } from "../../redux/rootReducer";
-import { sendMessage, IMessage } from "../../redux/modules/messages";
-import { createSelector } from "@reduxjs/toolkit";
-import { GiftedChat } from "react-native-gifted-chat";
-import { ClientContext } from "../../app/ClientProvider";
+import { createSelector } from '@reduxjs/toolkit';
+import React, { useContext } from 'react';
+import { GiftedChat } from 'react-native-gifted-chat';
+import { ConnectedProps, connect } from 'react-redux';
 
-const messageIdsSelector = (state: IRootState) => state.messages.allIds;
-const messagesByIdSelector = (state: IRootState) => state.messages.byId;
+import { ClientContext } from '../../app/ClientProvider';
+import { sendMessage } from '../../redux/modules/messages';
+import { RootState } from '../../redux/rootReducer';
+
+const messageIdsSelector = (state: RootState) => state.messages.allIds;
+const messagesByIdSelector = (state: RootState) => state.messages.byId;
 const allMessagesSelector = createSelector(
   [messageIdsSelector, messagesByIdSelector],
   (allIds, byId) =>
@@ -19,23 +20,23 @@ const allMessagesSelector = createSelector(
         createdAt: m.timestamp,
         user: {
           _id: m.fromJid,
-          name: m.fromJid
+          name: m.fromJid,
         },
-        sent: m.sent
+        sent: m.sent,
       };
-    })
+    }),
 );
 
-const jidSelector = (state: IRootState) =>
-  (state.auth.credentials && state.auth.credentials.jid) || "";
+const jidSelector = (state: RootState) =>
+  (state.auth.credentials && state.auth.credentials.jid) || '';
 
-const mapState = (state: IRootState) => ({
+const mapState = (state: RootState) => ({
   messages: allMessagesSelector(state),
-  userJid: jidSelector(state)
+  userJid: jidSelector(state),
 });
 
 const mapDispatch = {
-  sendMessage
+  sendMessage,
 };
 
 const connector = connect(mapState, mapDispatch);
@@ -44,12 +45,15 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 const ChatScreen: React.FC<PropsFromRedux> = ({
   messages,
   userJid,
-  sendMessage
+  sendMessage,
 }) => {
   const client = useContext(ClientContext);
+  if (!client) {
+    throw new Error('Client is undefined!');
+  }
   const send = messagesToSend => {
     messagesToSend.forEach(m => {
-      sendMessage(client!, "dev@xmpp.wobbly.app", m.text);
+      sendMessage(client, 'dev@xmpp.wobbly.app', m.text);
     });
   };
   return (

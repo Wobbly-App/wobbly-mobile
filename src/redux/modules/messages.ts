@@ -1,8 +1,9 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import WobblyClient from "../../common/WobblyClient";
-import { IAppThunk } from "../store";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-export interface IMessage {
+import WobblyClient from '../../common/WobblyClient';
+import { IAppThunk } from '../store';
+
+export interface Message {
   id: string;
   fromJid: string;
   toJid: string;
@@ -12,46 +13,48 @@ export interface IMessage {
   // delivered: boolean;
   error: boolean;
 }
-interface IMessagesState {
-  byId: { [id: string]: IMessage };
+interface MessagesState {
+  byId: { [id: string]: Message };
   allIds: string[];
 }
-const initialState: IMessagesState = {
+const initialState: MessagesState = {
   byId: {},
-  allIds: []
+  allIds: [],
 };
 
 const { actions, reducer } = createSlice({
-  name: "messages",
+  name: 'messages',
   initialState,
   reducers: {
-    messageAdded: (state, action: PayloadAction<IMessage>) => ({
+    messageAdded: (state, action: PayloadAction<Message>) => ({
       ...state,
       byId: { ...state.byId, [action.payload.id]: action.payload },
-      allIds: [action.payload.id, ...state.allIds]
+      allIds: [action.payload.id, ...state.allIds],
     }),
     // Used e.g. for updating the state of a message from "sent = false" to "sent = true"
-    messageUpdated: (state, action: PayloadAction<IMessage>) => ({
+    messageUpdated: (state, action: PayloadAction<Message>) => ({
       ...state,
-      byId: { ...state.byId, [action.payload.id]: action.payload }
-    })
-  }
+      byId: { ...state.byId, [action.payload.id]: action.payload },
+    }),
+  },
 });
+
+export const { messageAdded, messageUpdated } = actions;
 
 // Thunks
 export const sendMessage = (
   client: WobblyClient,
   recipientJid: string,
-  text: string
+  text: string,
 ): IAppThunk => async dispatch => {
-  const message: IMessage = {
-    id: "TODO",
+  const message: Message = {
+    id: 'TODO',
     fromJid: client.jid,
     toJid: recipientJid,
     text,
     timestamp: Date.now(),
     sent: false,
-    error: false
+    error: false,
   };
   dispatch(messageAdded(message));
   try {
@@ -62,5 +65,4 @@ export const sendMessage = (
   }
 };
 
-export const { messageAdded, messageUpdated } = actions;
 export default reducer;
