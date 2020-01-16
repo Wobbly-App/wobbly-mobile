@@ -10,18 +10,18 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:import/typescript',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:react/recommended',
     'prettier/@typescript-eslint',
   ],
   rules: {
     'react/prop-types': 'off',
     'no-shadow': 'off',
-    'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
-    'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'off',
     'import/order': [
       'error',
       {
@@ -32,6 +32,13 @@ module.exports = {
       },
     ],
     '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/interface-name-prefix': [
+      'error',
+      {
+        prefixWithI: 'never',
+      },
+    ],
+    '@typescript-eslint/no-explicit-any': 'off',
   },
   settings: {
     react: {

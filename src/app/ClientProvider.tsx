@@ -1,18 +1,26 @@
 import { jid } from '@xmpp/client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 
 import WobblyClient from '../common/WobblyClient';
-import { loadCredentials } from '../redux/modules/auth';
+import { loadCredentials, clientWasInitialized } from '../redux/modules/auth';
 import { messageAdded, Message } from '../redux/modules/messages';
 
 export const ClientContext = React.createContext<WobblyClient | undefined>(
   undefined,
 );
+export const useWobblyClient = () => {
+  const client = useContext(ClientContext);
+  if (!client) {
+    throw new Error('Client is undefined!');
+  }
+  return client;
+};
 
 const mapDispatch = {
   loadCredentials,
   messageAdded,
+  clientWasInitialized,
 };
 const connector = connect(undefined, mapDispatch);
 type PropsFromRedux = ConnectedProps<typeof connector>;
@@ -33,6 +41,7 @@ const ClientProvider: React.FC<ClientProviderProps & PropsFromRedux> = ({
   userJid,
   userPassword,
   messageAdded,
+  clientWasInitialized,
 }) => {
   // On mount, try to load existing credentials
   useEffect(() => {
@@ -60,15 +69,16 @@ const ClientProvider: React.FC<ClientProviderProps & PropsFromRedux> = ({
       const newClient = new WobblyClient(
         `wss://${jidObj.domain}:5443/ws`,
         jidObj.domain,
-        'wobbly-1', // resource. TODO: generate randomly and save
+        'wobbly-mobile', // resource. TODO: generate randomly and save
         jidObj.local,
         userPassword,
         mh,
       );
       newClient.start();
       setClient(newClient);
+      clientWasInitialized();
     }
-  }, [client, messageAdded, userJid, userPassword]);
+  }, [userJid, userPassword]);
 
   return (
     <ClientContext.Provider value={client}>{children}</ClientContext.Provider>

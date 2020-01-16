@@ -1,7 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import uuidv4 from 'uuid/v4';
 
 import WobblyClient from '../../common/WobblyClient';
-import { IAppThunk } from '../store';
+import { AppThunk } from '../store';
 
 export interface Message {
   id: string;
@@ -46,9 +47,9 @@ export const sendMessage = (
   client: WobblyClient,
   recipientJid: string,
   text: string,
-): IAppThunk => async dispatch => {
+): AppThunk => async dispatch => {
   const message: Message = {
-    id: 'TODO',
+    id: uuidv4(),
     fromJid: client.jid,
     toJid: recipientJid,
     text,

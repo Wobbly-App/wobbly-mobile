@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import * as SecureStore from 'expo-secure-store';
 
-import { IAppThunk } from '../store';
+import { AppThunk } from '../store';
 
 const SECURE_STORAGE_JID = 'jid';
 const SECURE_STORAGE_PASSWORD = 'password';
@@ -12,9 +12,10 @@ interface Credentials {
 }
 interface AuthState {
   credentials?: Credentials;
-  isLoading: boolean;
+  clientReady: boolean;
+  isLoadingAuth: boolean;
 }
-const initialState: AuthState = { isLoading: true };
+const initialState: AuthState = { isLoadingAuth: true, clientReady: false };
 const { reducer, actions } = createSlice({
   name: 'auth',
   initialState,
@@ -22,21 +23,30 @@ const { reducer, actions } = createSlice({
     receivedCredentials: (state, action: PayloadAction<Credentials>) => ({
       ...state,
       credentials: action.payload,
-      isLoading: false,
+      isLoadingAuth: false,
     }),
     clearedCredentials: state => ({
       ...state,
       credentials: undefined,
-      isLoading: false,
+      clientReady: false,
+      isLoadingAuth: false,
+    }),
+    clientWasInitialized: state => ({
+      ...state,
+      clientReady: true,
     }),
   },
 });
 
-export const { receivedCredentials, clearedCredentials } = actions;
+export const {
+  receivedCredentials,
+  clearedCredentials,
+  clientWasInitialized,
+} = actions;
 export default reducer;
 
 // Thunks
-export const loadCredentials = (): IAppThunk => async dispatch => {
+export const loadCredentials = (): AppThunk => async dispatch => {
   try {
     const jid = await SecureStore.getItemAsync(SECURE_STORAGE_JID);
     const password = await SecureStore.getItemAsync(SECURE_STORAGE_PASSWORD);
@@ -53,7 +63,7 @@ export const loadCredentials = (): IAppThunk => async dispatch => {
 export const login = (
   jid: string,
   password: string,
-): IAppThunk => async dispatch => {
+): AppThunk => async dispatch => {
   try {
     await SecureStore.setItemAsync(SECURE_STORAGE_JID, jid);
     await SecureStore.setItemAsync(SECURE_STORAGE_PASSWORD, password);
@@ -63,7 +73,7 @@ export const login = (
   }
 };
 
-export const logout = (): IAppThunk => async dispatch => {
+export const logout = (): AppThunk => async dispatch => {
   try {
     await SecureStore.deleteItemAsync(SECURE_STORAGE_JID);
     await SecureStore.deleteItemAsync(SECURE_STORAGE_PASSWORD);
