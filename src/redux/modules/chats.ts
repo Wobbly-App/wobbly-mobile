@@ -6,10 +6,11 @@ import { AppThunk } from '../store';
 
 import { Message, messageAdded } from './messages';
 
-interface Chat {
+export interface Chat {
   id: string;
   userIds: string[];
   messageIds: string[];
+  isDirectMessage: boolean;
 }
 interface ChatsState {
   byId: { [id: string]: Chat };
@@ -39,9 +40,15 @@ const { actions, reducer } = createSlice({
       const chatId = action.payload.fromJid;
       // TODO: handle userIds properly here
       // TODO: add userId of sender if not already included?
+      // TODO: handle `isDirectMessage = false` for group chats
       const isNewChat = !has(state.byId, chatId);
       const prevChat = isNewChat
-        ? { id: chatId, userIds: [chatId], messageIds: [] }
+        ? {
+            id: chatId,
+            userIds: [chatId],
+            messageIds: [],
+            isDirectMessage: true,
+          }
         : state.byId[chatId];
       return {
         ...state,
@@ -70,6 +77,7 @@ export const createChat = (
     id: recipient,
     userIds: [jid, recipient],
     messageIds: [],
+    isDirectMessage: true,
   };
   dispatch(chatAdded(chat));
 };

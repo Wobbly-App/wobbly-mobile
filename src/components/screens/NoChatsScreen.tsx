@@ -1,8 +1,19 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import { Text, Button } from 'react-native';
+import { Text, Button, StyleSheet, View } from 'react-native';
 
 import { MainStackParamList } from '../../app/Navigation';
+
+const style = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    fontSize: 30,
+  },
+});
 
 type NavigationProp = StackNavigationProp<MainStackParamList, 'NoChats'>;
 interface NoChatsScreenProps {
@@ -10,13 +21,13 @@ interface NoChatsScreenProps {
 }
 const NoChatsScreen: React.FC<NoChatsScreenProps> = ({ navigation }) => {
   const navigate = () => {
-    navigation.navigate('NewChat');
+    navigation.push('NewChat');
   };
   return (
-    <>
-      <Text>No chats</Text>
+    <View style={style.wrapper}>
+      <Text style={style.text}>No chats</Text>
       <Button onPress={navigate} title="Start a chat" />
-    </>
+    </View>
   );
 };
 

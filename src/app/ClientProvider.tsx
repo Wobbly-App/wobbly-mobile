@@ -9,6 +9,10 @@ import { messageAdded, Message } from '../redux/modules/messages';
 export const ClientContext = React.createContext<WobblyClient | undefined>(
   undefined,
 );
+/**
+ * Custom React hook that returns the `WobblyClient` from its context.
+ * Throws an error if the client isn't found.
+ */
 export const useWobblyClient = () => {
   const client = useContext(ClientContext);
   if (!client) {

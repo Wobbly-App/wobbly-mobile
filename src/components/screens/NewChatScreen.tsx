@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import { View, TextInput, Button } from 'react-native';
 import { ConnectedProps, connect } from 'react-redux';
 
-import { ClientContext } from '../../app/ClientProvider';
+import { ClientContext, useWobblyClient } from '../../app/ClientProvider';
 import { MainStackParamList } from '../../app/Navigation';
 import { createChat } from '../../redux/modules/chats';
 
@@ -26,12 +26,18 @@ const NewChatScreen: React.FC<NewChatScreenProps> = ({
   createChat,
   navigation,
 }) => {
-  const client = useContext(ClientContext);
+  const client = useWobblyClient();
 
   const submit = (values: FormValues, actions: FormikHelpers<FormValues>) => {
+    if (!values.recipient) {
+      return;
+    }
     createChat(client, values.recipient);
     actions.setSubmitting(false);
-    navigation.navigate('Chat', { chatId: values.recipient });
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Chat', params: { chatId: values.recipient } }],
+    });
   };
   return (
     <Formik initialValues={{ recipient: '' }} onSubmit={submit}>

@@ -6,10 +6,12 @@ import {
 } from '@react-navigation/stack';
 import React from 'react';
 import { ActivityIndicator } from 'react-native';
+import { enableScreens } from 'react-native-screens';
 import * as NavHeaderButtons from 'react-navigation-header-buttons';
 import { ConnectedProps, connect } from 'react-redux';
 
 import WobblyHeaderButtons from '../components/molecules/WobblyHeaderButtons';
+import Drawer from '../components/organisms/Drawer';
 import ChatScreen from '../components/screens/ChatScreen';
 import LoginScreen from '../components/screens/LoginScreen';
 import NewChatScreen from '../components/screens/NewChatScreen';
@@ -19,6 +21,10 @@ import { RootState } from '../redux/rootReducer';
 
 import ClientProvider, { useWobblyClient } from './ClientProvider';
 import * as NavigationService from './NavigationService';
+
+// Performance improvement:
+// https://reactnavigation.org/docs/en/next/react-native-screens.html
+enableScreens();
 
 const mapState = (state: RootState) => ({
   isLoadingAuth: state.auth.isLoadingAuth,
@@ -35,6 +41,7 @@ export type MainStackParamList = {
   NoChats: undefined;
 };
 
+const ModalStack = createStackNavigator();
 const MainStack = createStackNavigator<MainStackParamList>();
 const RootDrawer = createDrawerNavigator();
 
@@ -51,6 +58,7 @@ const HomeNav: React.FC = () => {
   );
   return (
     <MainStack.Navigator>
+      <MainStack.Screen name="NoChats" component={NoChatsScreen} />
       <MainStack.Screen
         name="Chat"
         component={ChatScreen}
@@ -60,7 +68,6 @@ const HomeNav: React.FC = () => {
           headerLeft: DrawerButton,
         })}
       />
-      <MainStack.Screen name="NewChat" component={NewChatScreen} />
     </MainStack.Navigator>
   );
 };
@@ -83,11 +90,21 @@ const Navigation: React.FC<PropsFromRedux> = ({
   } else if (!clientReady) {
     component = <ActivityIndicator />;
   } else {
+    const MainStack: React.FC = () => (
+      <RootDrawer.Navigator drawerType="slide" drawerContent={() => <Drawer />}>
+        <RootDrawer.Screen name="Home" component={HomeNav} />
+      </RootDrawer.Navigator>
+    );
     component = (
       <NavigationNativeContainer ref={NavigationService.navigationRef as any}>
-        <RootDrawer.Navigator drawerType="slide">
-          <RootDrawer.Screen name="Home" component={HomeNav} />
-        </RootDrawer.Navigator>
+        <ModalStack.Navigator mode="modal">
+          <ModalStack.Screen
+            name="MainStack"
+            component={MainStack}
+            options={{ headerShown: false }}
+          />
+          <ModalStack.Screen name="NewChat" component={NewChatScreen} />
+        </ModalStack.Navigator>
       </NavigationNativeContainer>
     );
   }
