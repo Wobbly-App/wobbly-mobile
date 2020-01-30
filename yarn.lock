@@ -1131,12 +1131,13 @@
     color "^3.1.2"
     react-native-iphone-x-helper "^1.2.1"
 
-"@react-navigation/native@^5.0.0-alpha.27":
-  version "5.0.0-alpha.27"
-  resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-5.0.0-alpha.27.tgz#d66a69aa9e041353e5dcf1c042da0f4a6eebecc1"
-  integrity sha512-vZe7FfBamnH1kwq6Uwv23E+KSfBg4+AO1/AcptJLY5CKdYCXF1svuB5NBVAvwXrr4jrnvhjVDceUmeQXHPGfOw==
+"@react-navigation/native@^3.6.2":
+  version "3.6.3"
+  resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-3.6.3.tgz#50b4519ebd001eaf2f07cb1ef531e7290ebd06d2"
+  integrity sha512-pkerjx3p9qs48nGwAyL4/IE9M971i4TEnAVlGAwBI48D+ZYkm9Rzn0rV0TdrUnUzwrYuBhwQQtVVKnMNMn8ABg==
   dependencies:
-    "@react-navigation/core" "^5.0.0-alpha.35"
+    hoist-non-react-statics "^3.3.2"
+    react-native-safe-area-view "^0.14.1"
 
 "@react-navigation/routers@^5.0.0-alpha.22":
   version "5.0.0-alpha.22"
@@ -3736,6 +3737,13 @@ hoist-non-react-statics@^3.3.0:
   dependencies:
     react-is "^16.7.0"
 
+hoist-non-react-statics@^3.3.2:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
+  integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
+  dependencies:
+    react-is "^16.7.0"
+
 hosted-git-info@^2.1.4:
   version "2.8.5"
   resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.8.5.tgz#759cfcf2c4d156ade59b0b2dfabddc42a6b9c70c"
@@ -5811,6 +5819,13 @@ react-native-safe-area-context@0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-0.6.0.tgz#f53f5a5bcafb462a8798a26b145e68946389ad60"
   integrity sha512-blY0akr3ZLTuZFdUotmjV+7LVXpBnd5CGFlNhTiarNNGJoHu79K42IJpUpmtg75iC9aWbSW7QHstlP0xz11V0A==
+
+react-native-safe-area-view@^0.14.1:
+  version "0.14.8"
+  resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.14.8.tgz#ef33c46ff8164ae77acad48c3039ec9c34873e5b"
+  integrity sha512-MtRSIcZNstxv87Jet+UsPhEd1tpGe8cVskDXlP657x6rHpSrbrc+y13ZNXrwAgGNNhqQNX7UJT68ZIq//ZRmvw==
+  dependencies:
+    hoist-non-react-statics "^2.3.1"
 
 react-native-screens@2.0.0-alpha.12:
   version "2.0.0-alpha.12"
