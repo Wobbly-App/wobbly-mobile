@@ -10,7 +10,6 @@ import { RootState } from '../../redux/rootReducer';
 import DrawerListItem from '../molecules/DrawerListItem';
 import DrawerListSectionHeader from '../molecules/DrawerListSectionHeader';
 
-
 // Performance could be improved by just getting chat IDs and passing
 // them to DrawerListItems that then fetch chat data from redux, but then
 // we couldn't use the SectionList

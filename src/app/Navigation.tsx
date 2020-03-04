@@ -1,5 +1,5 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationNativeContainer } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import {
   createStackNavigator,
   StackHeaderLeftButtonProps,
@@ -58,7 +58,14 @@ const HomeNav: React.FC = () => {
   );
   return (
     <MainStack.Navigator>
-      <MainStack.Screen name="NoChats" component={NoChatsScreen} />
+      <MainStack.Screen
+        name="NoChats"
+        component={NoChatsScreen}
+        options={() => ({
+          title: 'NoChats',
+          headerLeft: DrawerButton,
+        })}
+      />
       <MainStack.Screen
         name="Chat"
         component={ChatScreen}
@@ -96,7 +103,7 @@ const Navigation: React.FC<PropsFromRedux> = ({
       </RootDrawer.Navigator>
     );
     component = (
-      <NavigationNativeContainer ref={NavigationService.navigationRef as any}>
+      <NavigationContainer ref={NavigationService.navigationRef as any}>
         <ModalStack.Navigator mode="modal">
           <ModalStack.Screen
             name="MainStack"
@@ -105,7 +112,7 @@ const Navigation: React.FC<PropsFromRedux> = ({
           />
           <ModalStack.Screen name="NewChat" component={NewChatScreen} />
         </ModalStack.Navigator>
-      </NavigationNativeContainer>
+      </NavigationContainer>
     );
   }
   return (

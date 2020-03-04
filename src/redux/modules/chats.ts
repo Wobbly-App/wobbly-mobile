@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { omit, has } from 'lodash';
+import { omit, has, uniq } from 'lodash';
 
 import WobblyClient from '../../common/WobblyClient';
 import { AppThunk } from '../store';
@@ -27,7 +27,7 @@ const { actions, reducer } = createSlice({
     chatAdded: (state, action: PayloadAction<Chat>) => ({
       ...state,
       byId: { ...state.byId, [action.payload.id]: action.payload },
-      allIds: [action.payload.id, ...state.allIds],
+      allIds: uniq([action.payload.id, ...state.allIds]),
     }),
     chatRemoved: (state, action: PayloadAction<string>) => ({
       ...state,
