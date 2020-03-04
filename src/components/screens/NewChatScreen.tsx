@@ -34,10 +34,7 @@ const NewChatScreen: React.FC<NewChatScreenProps> = ({
     }
     createChat(client, values.recipient);
     actions.setSubmitting(false);
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Chat', params: { chatId: values.recipient } }],
-    });
+    navigation.navigate({ name: 'Chat', params: { chatId: values.recipient } });
   };
   return (
     <Formik initialValues={{ recipient: '' }} onSubmit={submit}>

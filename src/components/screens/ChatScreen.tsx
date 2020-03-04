@@ -57,11 +57,13 @@ const ChatScreen: React.FC<ChatScreenProps> = ({
   messages,
   userJid,
   sendMessage,
+  route,
 }) => {
   const client = useWobblyClient();
+  const recipientJid = route.params.chatId;
   const send = messagesToSend => {
     messagesToSend.forEach(m => {
-      sendMessage(client, 'dev@xmpp.wobbly.app', m.text);
+      sendMessage(client, recipientJid, m.text);
     });
   };
   return (

@@ -1,5 +1,6 @@
 import { XmppClient, XmppStatus, client, xml } from '@xmpp/client';
 import debug from '@xmpp/debug';
+import jid from '@xmpp/jid';
 
 import { Message } from '../redux/modules/messages';
 
@@ -38,7 +39,7 @@ export default class {
       await this.client.send(xml('presence'));
 
       // Send msg to self
-      await this.sendChat('dev@xmpp.wobbly.app', 'hello from wobbly');
+      // await this.sendChat('dev@xmpp.wobbly.app', 'hello from wobbly');
     });
 
     this.client.on('status', status => {
@@ -47,11 +48,15 @@ export default class {
 
     if (messageHandler) {
       this.client.on('stanza', stanza => {
-        if (stanza.is('message')) {
+        if (stanza.is('message') && stanza.getChild('stanza-id')) {
           const message: Message = {
             id: stanza.getChild('stanza-id').attrs.id,
-            fromJid: stanza.attrs.from,
-            toJid: stanza.attrs.to,
+            fromJid: jid(stanza.attrs.from)
+              .bare()
+              .toString(),
+            toJid: jid(stanza.attrs.to)
+              .bare()
+              .toString(),
             text: stanza.getChildText('body'),
             timestamp: Date.now(),
             sent: true,
@@ -76,7 +81,12 @@ export default class {
   public sendChat = async (recipientJid: string, text: string) => {
     const message = xml(
       'message',
-      { type: 'chat', to: recipientJid },
+      {
+        type: 'chat',
+        to: jid(recipientJid)
+          .bare()
+          .toString(),
+      },
       xml('body', {}, text),
     );
     await this.client.send(message);
