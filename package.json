@@ -32,7 +32,7 @@
     "@react-navigation/drawer": "^5.0.0-alpha.36",
     "@react-navigation/native": "^5.0.0-alpha.27",
     "@react-navigation/stack": "^5.0.0-alpha.61",
-    "@reduxjs/toolkit": "^1.2.1",
+    "@reduxjs/toolkit": "^1.2.5",
     "@xmpp/client": "^0.9.2",
     "@xmpp/debug": "^0.9.2",
     "expo": "~36.0.0",

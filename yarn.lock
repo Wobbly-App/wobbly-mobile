@@ -1163,10 +1163,10 @@
     color "^3.1.2"
     react-native-iphone-x-helper "^1.2.1"
 
-"@reduxjs/toolkit@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.2.1.tgz#2a68b608ff377a5409272c0a0ea08d87047007c1"
-  integrity sha512-mVvcjAyPS91wbAG2JoLIVP0JiWoLYHCA5WYevjHBjxhTlBPa3lYbUS9/IqanGPIt9TmSYON42l3BTPfWsfr2wg==
+"@reduxjs/toolkit@^1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.2.5.tgz#149aa62da12a18a67a30495cb63fd897003f2272"
+  integrity sha512-/OWoW5mniUXAomw4+3ZhhWodcs1/SRvK2HKyxLXdW6vKgmJhiBiSHe/huHARlKWujEmGaJrkafx548GE494bCQ==
   dependencies:
     immer "^4.0.1"
     redux "^4.0.0"
