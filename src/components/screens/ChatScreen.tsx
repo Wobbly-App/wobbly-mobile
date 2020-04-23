@@ -2,6 +2,7 @@ import { RouteProp } from '@react-navigation/native';
 import { createSelector } from '@reduxjs/toolkit';
 import React from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
+import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper';
 import { ConnectedProps, connect } from 'react-redux';
 
 import { useWobblyClient } from '../../app/ClientProvider';
@@ -66,8 +67,14 @@ const ChatScreen: React.FC<ChatScreenProps> = ({
       sendMessage(client, recipientJid, m.text);
     });
   };
+  const bottomOffset = isIphoneX ? 36 : 0;
   return (
-    <GiftedChat messages={messages} user={{ _id: userJid }} onSend={send} />
+    <GiftedChat
+      messages={messages}
+      user={{ _id: userJid }}
+      onSend={send}
+      bottomOffset={bottomOffset}
+    />
   );
 };
 
