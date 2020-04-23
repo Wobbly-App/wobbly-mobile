@@ -19,4 +19,7 @@ This will change: in the future, messages will be stored in an SQLite database. 
 will be stored in the filesystem. This raises the question of whether it's a good idea to keep Redux at all,
 or to move as many things as we can into SQLite.
 
+## Developing
+We recommend using [React Native Debugger](https://github.com/jhen0409/react-native-debugger/) (note: use version 0.10.x for compatibility with the version of React Native that we use).
+
 🖤 🐈
