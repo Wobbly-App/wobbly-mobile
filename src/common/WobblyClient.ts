@@ -17,7 +17,7 @@ export default class {
     resource: string,
     username: string,
     password: string,
-    messageHandler?: (msg: Message) => void,
+    incomingMessageHandler?: (msg: Message) => void,
   ) {
     this.client = client({
       service,
@@ -30,7 +30,7 @@ export default class {
     this.status = 'disconnect';
     this.jid = `${username}@${domain}`;
 
-    this.client.on('error', err => {
+    this.client.on('error', (err) => {
       console.error(err);
     });
 
@@ -42,34 +42,30 @@ export default class {
       // await this.sendChat('dev@xmpp.wobbly.app', 'hello from wobbly');
     });
 
-    this.client.on('status', status => {
+    this.client.on('status', (status) => {
       this.status = status;
     });
 
-    if (messageHandler) {
-      this.client.on('stanza', stanza => {
+    if (incomingMessageHandler) {
+      this.client.on('stanza', (stanza) => {
         if (stanza.is('message') && stanza.getChild('stanza-id')) {
           const message: Message = {
             id: stanza.getChild('stanza-id').attrs.id,
-            fromJid: jid(stanza.attrs.from)
-              .bare()
-              .toString(),
-            toJid: jid(stanza.attrs.to)
-              .bare()
-              .toString(),
+            fromJid: jid(stanza.attrs.from).bare().toString(),
+            toJid: jid(stanza.attrs.to).bare().toString(),
             text: stanza.getChildText('body'),
             timestamp: Date.now(),
             sent: true,
             error: false,
           };
-          messageHandler(message);
+          incomingMessageHandler(message);
         }
       });
     }
   }
 
   public start = () => {
-    this.client.start().catch(e => {
+    this.client.start().catch((e) => {
       console.error(e);
     });
   };
@@ -83,9 +79,7 @@ export default class {
       'message',
       {
         type: 'chat',
-        to: jid(recipientJid)
-          .bare()
-          .toString(),
+        to: jid(recipientJid).bare().toString(),
       },
       xml('body', {}, text),
     );

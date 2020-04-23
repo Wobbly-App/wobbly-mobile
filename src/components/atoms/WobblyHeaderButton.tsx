@@ -9,7 +9,7 @@ interface HeaderButtonProps {
 /**
  * https://github.com/vonovak/react-navigation-header-buttons#how-to-integrate-in-your-project
  */
-const WobblyHeaderButton: React.FC<HeaderButtonProps> = props => (
+const WobblyHeaderButton: React.FC<HeaderButtonProps> = (props) => (
   <NavHeaderButtons.HeaderButton
     {...props}
     IconComponent={MaterialIcons}

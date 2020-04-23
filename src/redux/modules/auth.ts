@@ -25,13 +25,13 @@ const { reducer, actions } = createSlice({
       credentials: action.payload,
       isLoadingAuth: false,
     }),
-    clearedCredentials: state => ({
+    clearedCredentials: (state) => ({
       ...state,
       credentials: undefined,
       clientReady: false,
       isLoadingAuth: false,
     }),
-    clientWasInitialized: state => ({
+    clientWasInitialized: (state) => ({
       ...state,
       clientReady: true,
     }),
@@ -46,7 +46,7 @@ export const {
 export default reducer;
 
 // Thunks
-export const loadCredentials = (): AppThunk => async dispatch => {
+export const loadCredentials = (): AppThunk => async (dispatch) => {
   try {
     const jid = await SecureStore.getItemAsync(SECURE_STORAGE_JID);
     const password = await SecureStore.getItemAsync(SECURE_STORAGE_PASSWORD);
@@ -60,10 +60,9 @@ export const loadCredentials = (): AppThunk => async dispatch => {
   }
 };
 
-export const login = (
-  jid: string,
-  password: string,
-): AppThunk => async dispatch => {
+export const login = (jid: string, password: string): AppThunk => async (
+  dispatch,
+) => {
   try {
     await SecureStore.setItemAsync(SECURE_STORAGE_JID, jid);
     await SecureStore.setItemAsync(SECURE_STORAGE_PASSWORD, password);
@@ -73,7 +72,7 @@ export const login = (
   }
 };
 
-export const logout = (): AppThunk => async dispatch => {
+export const logout = (): AppThunk => async (dispatch) => {
   try {
     await SecureStore.deleteItemAsync(SECURE_STORAGE_JID);
     await SecureStore.deleteItemAsync(SECURE_STORAGE_PASSWORD);

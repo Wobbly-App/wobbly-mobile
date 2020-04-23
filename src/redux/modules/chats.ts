@@ -4,7 +4,7 @@ import { omit, has, uniq } from 'lodash';
 import WobblyClient from '../../common/WobblyClient';
 import { AppThunk } from '../store';
 
-import { Message, messageAdded } from './messages';
+import { Message, MessageCore, messageSent, messageReceived } from './messages';
 
 export interface Chat {
   id: string;
@@ -32,11 +32,33 @@ const { actions, reducer } = createSlice({
     chatRemoved: (state, action: PayloadAction<string>) => ({
       ...state,
       byId: omit(state.byId, action.payload),
-      allIds: state.allIds.filter(id => id !== action.payload),
+      allIds: state.allIds.filter((id) => id !== action.payload),
     }),
   },
   extraReducers: {
-    [messageAdded.type]: (state, action: PayloadAction<Message>) => {
+    [messageSent.type]: (state, action: PayloadAction<MessageCore>) => {
+      const chatId = action.payload.toJid;
+      const isNewChat = !has(state.byId, chatId);
+      const prevChat = isNewChat
+        ? {
+            id: chatId,
+            userIds: [chatId],
+            messageIds: [],
+            isDirectMessage: true,
+          }
+        : state.byId[chatId];
+      return {
+        ...state,
+        byId: {
+          ...state.byId,
+          [chatId]: {
+            ...prevChat,
+            messageIds: [action.payload.id, ...prevChat.messageIds],
+          },
+        },
+      };
+    },
+    [messageReceived.type]: (state, action: PayloadAction<Message>) => {
       const chatId = action.payload.fromJid;
       // TODO: handle userIds properly here
       // TODO: add userId of sender if not already included?
@@ -71,7 +93,7 @@ export default reducer;
 export const createChat = (
   client: WobblyClient,
   recipient: string,
-): AppThunk => dispatch => {
+): AppThunk => (dispatch) => {
   const jid = client.jid;
   const chat: Chat = {
     id: recipient,

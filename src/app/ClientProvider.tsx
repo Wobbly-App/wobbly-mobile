@@ -4,7 +4,7 @@ import { connect, ConnectedProps } from 'react-redux';
 
 import WobblyClient from '../common/WobblyClient';
 import { loadCredentials, clientWasInitialized } from '../redux/modules/auth';
-import { messageAdded, Message } from '../redux/modules/messages';
+import { messageReceived, Message } from '../redux/modules/messages';
 
 export const ClientContext = React.createContext<WobblyClient | undefined>(
   undefined,
@@ -23,7 +23,7 @@ export const useWobblyClient = () => {
 
 const mapDispatch = {
   loadCredentials,
-  messageAdded,
+  messageReceived,
   clientWasInitialized,
 };
 const connector = connect(undefined, mapDispatch);
@@ -44,7 +44,7 @@ const ClientProvider: React.FC<ClientProviderProps & PropsFromRedux> = ({
   children,
   userJid,
   userPassword,
-  messageAdded,
+  messageReceived,
   clientWasInitialized,
 }) => {
   // On mount, try to load existing credentials
@@ -66,8 +66,8 @@ const ClientProvider: React.FC<ClientProviderProps & PropsFromRedux> = ({
       }
     } else {
       // We have credentials, so initialize a client and set it in the state.
-      const mh = (msg: Message): void => {
-        messageAdded(msg);
+      const incomingMessageHandler = (msg: Message): void => {
+        messageReceived(msg);
       };
       const jidObj = jid(userJid);
       const newClient = new WobblyClient(
@@ -76,7 +76,7 @@ const ClientProvider: React.FC<ClientProviderProps & PropsFromRedux> = ({
         'wobbly-mobile', // resource. TODO: generate randomly and save
         jidObj.local,
         userPassword,
-        mh,
+        incomingMessageHandler,
       );
       newClient.start();
       setClient(newClient);

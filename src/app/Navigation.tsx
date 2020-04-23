@@ -11,7 +11,7 @@ import * as NavHeaderButtons from 'react-navigation-header-buttons';
 import { ConnectedProps, connect } from 'react-redux';
 
 import WobblyHeaderButtons from '../components/molecules/WobblyHeaderButtons';
-import Drawer from '../components/organisms/Drawer';
+import WobblyDrawer from '../components/organisms/WobblyDrawer';
 import ChatScreen from '../components/screens/ChatScreen';
 import LoginScreen from '../components/screens/LoginScreen';
 import NewChatScreen from '../components/screens/NewChatScreen';
@@ -98,7 +98,10 @@ const Navigation: React.FC<PropsFromRedux> = ({
     component = <ActivityIndicator />;
   } else {
     const MainStack: React.FC = () => (
-      <RootDrawer.Navigator drawerType="slide" drawerContent={() => <Drawer />}>
+      <RootDrawer.Navigator
+        drawerType="slide"
+        drawerContent={(props) => <WobblyDrawer {...props} />}
+      >
         <RootDrawer.Screen name="Home" component={HomeNav} />
       </RootDrawer.Navigator>
     );

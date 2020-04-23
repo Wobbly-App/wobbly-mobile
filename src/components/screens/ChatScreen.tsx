@@ -61,8 +61,8 @@ const ChatScreen: React.FC<ChatScreenProps> = ({
 }) => {
   const client = useWobblyClient();
   const recipientJid = route.params.chatId;
-  const send = messagesToSend => {
-    messagesToSend.forEach(m => {
+  const send = (messagesToSend) => {
+    messagesToSend.forEach((m) => {
       sendMessage(client, recipientJid, m.text);
     });
   };
