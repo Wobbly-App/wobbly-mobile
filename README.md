@@ -17,6 +17,8 @@
 ## Style guide
 We generally try to follow [Redux best practices](https://redux.js.org/style-guide/style-guide/).
 
+For formatting, we use [Prettier](https://prettier.io/) and [ESlint](https://eslint.org/). Before committing code, run `yarn lint:fix && yarn pretty:fix` to clean up the formatting automatically.
+
 ## State
 State is stored in a number of different places.
 * Credentials are stored in Expo's [SecureStore](https://docs.expo.io/versions/latest/sdk/securestore/).
