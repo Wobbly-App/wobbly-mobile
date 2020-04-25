@@ -79,5 +79,6 @@ export const logout = (): AppThunk => async (dispatch) => {
     dispatch(clearedCredentials());
   } catch {
     // TODO: handle logout failure
+    throw new Error('Failed to log out!');
   }
 };

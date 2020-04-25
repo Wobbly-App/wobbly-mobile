@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native';
 import { createSelector } from '@reduxjs/toolkit';
 import React from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
-import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 import { ConnectedProps, connect } from 'react-redux';
 
 import { useWobblyClient } from '../../app/ClientProvider';

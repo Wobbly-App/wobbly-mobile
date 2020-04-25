@@ -11,6 +11,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { Chat } from '../../redux/modules/chats';
 import { RootState } from '../../redux/rootReducer';
 import DrawerListSection from '../molecules/DrawerListSection';
+import LogoutButton from '../molecules/LogoutButton';
 
 // Performance could be improved by just getting chat IDs and passing
 // them to DrawerListItems that then fetch chat data from redux, but then
@@ -54,6 +55,7 @@ const WobblyDrawer: React.FC<WobblyDrawerProps> = ({
     {chatSections.map(({ title, data }) => (
       <DrawerListSection key={title} title={title} chats={data} />
     ))}
+    <LogoutButton />
   </DrawerContentScrollView>
 );
 
