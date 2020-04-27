@@ -6,7 +6,11 @@ import { colors } from '../../style/common';
 
 const styles = StyleSheet.create({
   heading: {
+<<<<<<< HEAD
     // fontFamily: 'montserrat-bold',
+=======
+    fontFamily: 'montserrat-bold',
+>>>>>>> Add form components from archived frontend
   },
   listHeading: {
     fontSize: 14,
@@ -26,7 +30,10 @@ interface WobblyText extends TextProps {
   subhead?: boolean;
   listHeading?: boolean;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> Add form components from archived frontend
 const WobblyText: React.FC<WobblyText> = ({
   largeTitle,
   title1,
