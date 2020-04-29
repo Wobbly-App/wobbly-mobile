@@ -6,16 +6,15 @@ import { colors } from '../../style/common';
 
 const styles = StyleSheet.create({
   heading: {
-<<<<<<< HEAD
-    // fontFamily: 'montserrat-bold',
-=======
     fontFamily: 'montserrat-bold',
->>>>>>> Add form components from archived frontend
   },
   listHeading: {
     fontSize: 14,
     color: colors.gray2,
     marginHorizontal: 10,
+  },
+  label: {
+    fontFamily: 'montserrat-regular',
   },
 });
 
@@ -29,11 +28,9 @@ interface WobblyText extends TextProps {
   callout?: boolean;
   subhead?: boolean;
   listHeading?: boolean;
+  label?: boolean;
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> Add form components from archived frontend
 const WobblyText: React.FC<WobblyText> = ({
   largeTitle,
   title1,
@@ -43,11 +40,13 @@ const WobblyText: React.FC<WobblyText> = ({
   callout,
   subhead,
   listHeading,
+  label,
   children,
   style,
   ...rest
 }) => {
   const isHeading = largeTitle || title1 || title2 || title3;
+  const isLabel = label;
   return (
     <Text
       style={StyleSheet.flatten([
@@ -61,6 +60,7 @@ const WobblyText: React.FC<WobblyText> = ({
         subhead && human.subhead,
         listHeading && styles.listHeading,
         isHeading && styles.heading,
+        isLabel && styles.label,
         style && style,
       ])}
       {...rest}
