@@ -6,7 +6,7 @@ import { colors } from '../../style/common';
 
 const styles = StyleSheet.create({
   heading: {
-    fontFamily: 'montserrat-bold',
+    // fontFamily: 'montserrat-bold',
   },
   listHeading: {
     fontSize: 14,
@@ -26,6 +26,7 @@ interface WobblyText extends TextProps {
   subhead?: boolean;
   listHeading?: boolean;
 }
+
 const WobblyText: React.FC<WobblyText> = ({
   largeTitle,
   title1,
