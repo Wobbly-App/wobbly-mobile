@@ -4,7 +4,7 @@ import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { ConnectedProps, connect } from 'react-redux';
 
 import { login } from '../../redux/modules/auth';
-import { FormErrors, FormField, FormLabel, WobblyText } from '../atoms';
+import { FormErrors, FormField, WobblyText } from '../atoms';
 import WobblyButton, { Intent } from '../atoms/WobblyButton';
 
 const styles = StyleSheet.create({
@@ -32,8 +32,17 @@ export interface LoginFormFields {
 }
 
 class LoginScreen extends React.PureComponent<PropsFromRedux> {
-  loginFlow() {
+  constructor(props: any) {
+    super(props);
+    this.loginFlow = this.loginFlow.bind(this);
+  }
+
+  loginFlow(values: any) {
+    const { email, password } = values;
     this.props.login('dev@xmpp.wobbly.app', 'Cee9ech4Ia6wupho');
+
+    // Referencing previous login screen code
+    // https://github.com/Wobbly-App/wobbly-frontend/blob/develop/src/components/screens/LoginScreen.tsx
   }
 
   render() {
@@ -44,7 +53,7 @@ class LoginScreen extends React.PureComponent<PropsFromRedux> {
         </WobblyText>
         <Formik
           initialValues={{ email: '', password: '' }}
-          onSubmit={this.loginFlow.bind(this)}
+          onSubmit={(values) => this.loginFlow(values)}
           validateOnChange={false}
         >
           {(formikBag: FormikProps<LoginFormFields>) => (
