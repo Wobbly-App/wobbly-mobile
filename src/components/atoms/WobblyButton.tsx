@@ -21,11 +21,7 @@ const style = StyleSheet.create({
   minimal: {},
   minimalText: {
     color: colors.gray3,
-<<<<<<< HEAD
-    // fontFamily: 'open-sans-bold',
-=======
     fontFamily: 'open-sans-bold',
->>>>>>> Add form components from archived frontend
     fontSize: 15,
   },
   primary: {
