@@ -1,21 +1,11 @@
 import { Formik, FormikProps } from 'formik';
 import React from 'react';
-import {
-  Button,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { ConnectedProps, connect } from 'react-redux';
 
 import { login } from '../../redux/modules/auth';
-import FormErrors from '../atoms/FormErrors';
-import FormField from '../atoms/FormField';
-import FormLabel from '../atoms/FormLabel';
+import { FormErrors, FormField, FormLabel, WobblyText } from '../atoms';
 import WobblyButton, { Intent } from '../atoms/WobblyButton';
-import WobblyText from '../atoms/WobblyText';
 
 const styles = StyleSheet.create({
   container: {
