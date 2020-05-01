@@ -17,7 +17,6 @@ const style = StyleSheet.create({
 interface FormErrorsProps {
   errors: Array<string | undefined>;
 }
-<<<<<<< HEAD
 const FormErrors: React.FC<FormErrorsProps> = ({ errors }) => {
   const filteredErrors = errors.filter((error) => !!error) as string[];
   return (
@@ -31,22 +30,6 @@ const FormErrors: React.FC<FormErrorsProps> = ({ errors }) => {
           {error}
         </WobblyText>
       ))}
-=======
-const FormErrors: React.SFC<FormErrorsProps> = ({ errors }) => {
-  const filteredErrors = errors.filter((error) => !!error) as string[];
-  return (
-    <View style={style.formErrors}>
-      {filteredErrors &&
-        filteredErrors.map((error: string, idx: number) => (
-          <WobblyText
-            key={`${idx}-${error}`}
-            style={style.formErrorText}
-            callout={true}
-          >
-            {error}
-          </WobblyText>
-        ))}
->>>>>>> Add form components from archived frontend
     </View>
   );
 };
