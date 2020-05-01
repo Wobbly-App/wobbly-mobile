@@ -37,8 +37,7 @@ class LoginScreen extends React.PureComponent<PropsFromRedux> {
     this.loginFlow = this.loginFlow.bind(this);
   }
 
-  loginFlow(values: any) {
-    const { email, password } = values;
+  loginFlow() {
     this.props.login('dev@xmpp.wobbly.app', 'Cee9ech4Ia6wupho');
 
     // Referencing previous login screen code
@@ -53,7 +52,7 @@ class LoginScreen extends React.PureComponent<PropsFromRedux> {
         </WobblyText>
         <Formik
           initialValues={{ email: '', password: '' }}
-          onSubmit={(values) => this.loginFlow(values)}
+          onSubmit={() => this.loginFlow()}
           validateOnChange={false}
         >
           {(formikBag: FormikProps<LoginFormFields>) => (
