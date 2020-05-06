@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import { Text, Button, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { MainStackParamList } from '../../app/Navigation';
 import { WobblyText, WobblyButton } from '../atoms';
