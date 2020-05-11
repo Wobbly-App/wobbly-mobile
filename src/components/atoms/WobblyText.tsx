@@ -6,7 +6,7 @@ import { colors } from '../../style/common';
 
 const styles = StyleSheet.create({
   heading: {
-    // fontFamily: 'montserrat-bold',
+    fontFamily: 'montserrat-bold',
   },
   listHeading: {
     fontSize: 14,

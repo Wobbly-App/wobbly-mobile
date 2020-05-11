@@ -44,6 +44,7 @@ const style = StyleSheet.create({
   },
   buttonText: {
     color: colors.black,
+    fontFamily: 'open-sans-bold',
     fontSize: 17,
     textAlign: 'center',
   },

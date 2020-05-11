@@ -15,7 +15,9 @@ interface FormLabelProps {
 }
 
 const FormLabel = ({ children }: FormLabelProps) => (
-  <WobblyText style={style.label}>{children}</WobblyText>
+  <WobblyText style={style.label} label={true}>
+    {children}
+  </WobblyText>
 );
 
 export default FormLabel;
