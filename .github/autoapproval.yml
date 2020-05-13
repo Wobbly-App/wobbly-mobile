@@ -1,5 +1,6 @@
 from_owner:
-  - dependabot-preview
+  - dependabot-preview[bot]
+  - dependabot[bot]
 required_labels:
   - dependencies
 apply_labels:
