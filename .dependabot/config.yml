@@ -6,6 +6,10 @@ update_configs:
     ignored_updates:
       - match:
           dependency_name: "react-native"
+      - match:
+          dependency_name: "react"
+      - match:
+          dependency_name: "react-native-screens"
     automerged_updates:
       - match:
           dependency_type: "all"
