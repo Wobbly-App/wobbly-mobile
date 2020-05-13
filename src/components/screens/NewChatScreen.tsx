@@ -1,20 +1,13 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Formik, FormikHelpers } from 'formik';
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Button, Input } from 'react-native-elements';
 import { ConnectedProps, connect } from 'react-redux';
 
 import { useWobblyClient } from '../../app/ClientProvider';
 import { MainStackParamList } from '../../app/Navigation';
 import { createChat } from '../../redux/modules/chats';
-import ScreenContainer from '../atoms/ScreenContainer';
-
-const style = StyleSheet.create({
-  input: {
-    marginVertical: 20,
-  },
-});
+import { ScreenContainer, FormField, FormLabel, WobblyButton } from '../atoms/';
+import { Intent } from '../atoms/WobblyButton';
 
 const mapDispatch = {
   createChat,
@@ -48,15 +41,18 @@ const NewChatScreen: React.FC<NewChatScreenProps> = ({
     <Formik initialValues={{ recipient: '' }} onSubmit={submit}>
       {({ handleChange, handleBlur, handleSubmit, values }) => (
         <ScreenContainer>
-          <Input
-            label="Recipient"
+          <FormLabel>Recipient</FormLabel>
+          <FormField
             placeholder="username"
             onChangeText={handleChange('recipient')}
             onBlur={handleBlur('recipient')}
             value={values.recipient}
-            containerStyle={style.input}
           />
-          <Button onPress={handleSubmit as any} title="Submit" />
+          <WobblyButton
+            onPress={handleSubmit as any}
+            text="Submit"
+            intent={Intent.PRIMARY}
+          />
         </ScreenContainer>
       )}
     </Formik>

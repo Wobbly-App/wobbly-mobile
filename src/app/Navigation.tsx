@@ -4,7 +4,8 @@ import {
   createStackNavigator,
   StackHeaderLeftButtonProps,
 } from '@react-navigation/stack';
-import React from 'react';
+import * as Font from 'expo-font';
+import React, { useState, useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
 import { enableScreens } from 'react-native-screens';
 import * as NavHeaderButtons from 'react-navigation-header-buttons';
@@ -90,7 +91,25 @@ const Navigation: React.FC<PropsFromRedux> = ({
   isLoadingAuth,
 }) => {
   let component;
-  if (isLoadingAuth) {
+
+  // Adapted from https://stackoverflow.com/questions/58478450/react-native-importing-fonts-with-async-componentdidmount-expected
+  const [fontLoaded, setFontLoaded] = useState(false);
+  async function fontInit() {
+    await Font.loadAsync({
+      'open-sans-regular': require('../../assets/fonts/OpenSans-Regular.ttf'),
+      'open-sans-semi-bold': require('../../assets/fonts/OpenSans-SemiBold.ttf'),
+      'open-sans-bold': require('../../assets/fonts/OpenSans-Bold.ttf'),
+      'montserrat-regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
+      'montserrat-bold': require('../../assets/fonts/Montserrat-Bold.ttf'),
+      'montserrat-black': require('../../assets/fonts/Montserrat-Black.ttf'),
+    });
+    setFontLoaded(true);
+  }
+  useEffect(() => {
+    fontInit();
+  }, []);
+
+  if (isLoadingAuth || !fontLoaded) {
     component = <WobblySplashScreen />;
   } else if (!credentials) {
     component = <LoginScreen />;
@@ -118,6 +137,7 @@ const Navigation: React.FC<PropsFromRedux> = ({
       </NavigationContainer>
     );
   }
+
   return (
     <ClientProvider
       userJid={credentials && credentials.jid}

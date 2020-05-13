@@ -21,7 +21,7 @@ const style = StyleSheet.create({
   minimal: {},
   minimalText: {
     color: colors.gray3,
-    // fontFamily: 'open-sans-bold',
+    fontFamily: 'open-sans-bold',
     fontSize: 15,
   },
   primary: {
@@ -44,6 +44,7 @@ const style = StyleSheet.create({
   },
   buttonText: {
     color: colors.black,
+    fontFamily: 'open-sans-bold',
     fontSize: 17,
     textAlign: 'center',
   },

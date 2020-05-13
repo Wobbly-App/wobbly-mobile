@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     color: colors.black,
+    fontFamily: 'open-sans-regular',
   },
 });
 

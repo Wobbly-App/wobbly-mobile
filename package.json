@@ -36,6 +36,7 @@
     "@xmpp/debug": "^0.11.0",
     "expo": "^37.0.0",
     "expo-constants": "~9.0.0",
+    "expo-font": "~8.1.0",
     "expo-random": "~8.1.0",
     "expo-secure-store": "~8.1.0",
     "formik": "^2.1.4",
