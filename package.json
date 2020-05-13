@@ -42,7 +42,7 @@
     "formik": "^2.1.4",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
-    "react": "~16.13.0",
+    "react": "~16.13.1",
     "react-dom": "~16.13.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
     "react-native-elements": "^1.2.7",
