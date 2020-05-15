@@ -1,88 +1,94 @@
-import { XmppClient, XmppStatus, client, xml } from '@xmpp/client';
-import debug from '@xmpp/debug';
-import jid from '@xmpp/jid';
-
-import { Message } from '../redux/modules/messages';
-
 export default class {
-  private client: XmppClient;
-
-  public status: XmppStatus;
-
-  public jid: string;
+  private domain: string;
+  private accessToken: string;
+  private refreshToken: string;
 
   public constructor(
-    service: string,
     domain: string,
-    resource: string,
-    username: string,
-    password: string,
-    incomingMessageHandler?: (msg: Message) => void,
+    accessToken: string,
+    refreshToken: string,
   ) {
-    this.client = client({
-      service,
-      domain,
-      resource,
-      username,
-      password,
-    });
-    debug(this.client, true);
-    this.status = 'disconnect';
-    this.jid = `${username}@${domain}`;
-
-    this.client.on('error', (err) => {
-      console.error(err);
-    });
-
-    this.client.on('online', async () => {
-      // Makes itself available
-      await this.client.send(xml('presence'));
-
-      // Send msg to self
-      // await this.sendChat('dev@xmpp.wobbly.app', 'hello from wobbly');
-    });
-
-    this.client.on('status', (status) => {
-      this.status = status;
-    });
-
-    if (incomingMessageHandler) {
-      this.client.on('stanza', (stanza) => {
-        if (stanza.is('message') && stanza.getChild('stanza-id')) {
-          const message: Message = {
-            id: stanza.getChild('stanza-id').attrs.id,
-            fromJid: jid(stanza.attrs.from).bare().toString(),
-            toJid: jid(stanza.attrs.to).bare().toString(),
-            text: stanza.getChildText('body'),
-            timestamp: Date.now(),
-            sent: true,
-            error: false,
-          };
-          incomingMessageHandler(message);
-        }
-      });
-    }
+    this.domain = domain;
+    this.accessToken = accessToken;
+    this.refreshToken = refreshToken;
   }
 
-  public start = () => {
-    this.client.start().catch((e) => {
-      console.error(e);
-    });
-  };
-
-  public stop = () => {
-    this.client.stop();
-  };
-
-  public sendChat = async (recipientJid: string, text: string) => {
-    const message = xml(
-      'message',
-      {
-        type: 'chat',
-        to: jid(recipientJid).bare().toString(),
+  // Note: instantiating this class is handled in `ClientProvider.ts`, not here.
+  // It can either be instantiated when logging in initially, or when starting the app
+  // at a later time. This static function is used in the former case.
+  public static async login(domain: string, email: string, password: string) {
+    const user = {
+      user: {
+        email,
+        password,
       },
-      xml('body', {}, text),
-    );
-    await this.client.send(message);
-  };
+    };
+    return fetch(`https://${domain}/api/v1/session/`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    }).then((response) => response.json());
+  }
+
+  public static async signup(domain: string, email: string, password: string) {
+    const user = {
+      user: {
+        email,
+        password,
+        passwordConfirmation: password,
+      },
+    };
+    return fetch(`https://${domain}/api/v1/registration/`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    }).then((response) => response.json());
+  }
+
+  public getMessages() {
+    return this.get('messages/');
+  }
+
+  public sendMessage(recipient: string, body: string) {
+    return this.post('messages/', { recipient, body });
+  }
+
+  public getGroups() {
+    return this.get('groups/');
+  }
+
+  public createGroup(name: string) {
+    return this.post('groups/', { name });
+  }
+
+  // Private helper functions
+  private post(endpoint: string, body: any, domainOverride?: string) {
+    const domain = domainOverride || this.domain;
+    return fetch(`https://${domain}/api/v1/${endpoint}`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: this.accessToken,
+      },
+      body: JSON.stringify(body),
+    }).then((response) => response.json());
+  }
+
+  private get(endpoint: string) {
+    fetch(`https://${this.domain}${endpoint}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: this.accessToken,
+      },
+    }).then((response) => response.json());
+  }
 }

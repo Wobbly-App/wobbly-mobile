@@ -19,9 +19,6 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": false
-    },
-    "extra": {
-      "backendUrl": "xmpp.wobbly.app"
     }
   }
 }

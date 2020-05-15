@@ -32,8 +32,6 @@
     "@react-navigation/native": "^5.0.9",
     "@react-navigation/stack": "^5.1.1",
     "@reduxjs/toolkit": "^1.2.5",
-    "@xmpp/client": "^0.11.1",
-    "@xmpp/debug": "^0.11.0",
     "expo": "^37.0.0",
     "expo-constants": "~9.0.0",
     "expo-font": "~8.1.0",
@@ -60,7 +58,8 @@
     "redux-thunk": "^2.3.0",
     "thunk": "^0.0.1",
     "url": "^0.11.0",
-    "uuid": "^7.0.2"
+    "uuid": "^7.0.2",
+    "yup": "^0.28.5"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
@@ -70,6 +69,7 @@
     "@types/react-native": "^0.62.8",
     "@types/react-redux": "^7.1.7",
     "@types/uuid": "^7.0.0",
+    "@types/yup": "^0.28.3",
     "@typescript-eslint/eslint-plugin": "^2.22.0",
     "@typescript-eslint/parser": "^2.22.0",
     "babel-preset-expo": "^8.1.0",

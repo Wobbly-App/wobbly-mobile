@@ -17,6 +17,7 @@ import ChatScreen from '../components/screens/ChatScreen';
 import LoginScreen from '../components/screens/LoginScreen';
 import NewChatScreen from '../components/screens/NewChatScreen';
 import NoChatsScreen from '../components/screens/NoChatsScreen';
+import SignupScreen from '../components/screens/SignupScreen';
 import WobblySplashScreen from '../components/screens/WobblySplashScreen';
 import { RootState } from '../redux/rootReducer';
 
@@ -112,7 +113,20 @@ const Navigation: React.FC<PropsFromRedux> = ({
   if (isLoadingAuth || !fontLoaded) {
     component = <WobblySplashScreen />;
   } else if (!credentials) {
-    component = <LoginScreen />;
+    component = (
+      <ModalStack.Navigator mode="modal">
+        <ModalStack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <ModalStack.Screen
+          name="Signup"
+          component={SignupScreen}
+          options={{ headerShown: false }}
+        />
+      </ModalStack.Navigator>
+    );
   } else if (!clientReady) {
     component = <ActivityIndicator />;
   } else {
@@ -125,25 +139,22 @@ const Navigation: React.FC<PropsFromRedux> = ({
       </RootDrawer.Navigator>
     );
     component = (
-      <NavigationContainer ref={NavigationService.navigationRef as any}>
-        <ModalStack.Navigator mode="modal">
-          <ModalStack.Screen
-            name="MainStack"
-            component={MainStack}
-            options={{ headerShown: false }}
-          />
-          <ModalStack.Screen name="NewChat" component={NewChatScreen} />
-        </ModalStack.Navigator>
-      </NavigationContainer>
+      <ModalStack.Navigator mode="modal">
+        <ModalStack.Screen
+          name="MainStack"
+          component={MainStack}
+          options={{ headerShown: false }}
+        />
+        <ModalStack.Screen name="NewChat" component={NewChatScreen} />
+      </ModalStack.Navigator>
     );
   }
 
   return (
-    <ClientProvider
-      userJid={credentials && credentials.jid}
-      userPassword={credentials && credentials.password}
-    >
-      {component}
+    <ClientProvider credentials={credentials}>
+      <NavigationContainer ref={NavigationService.navigationRef as any}>
+        {component}
+      </NavigationContainer>
     </ClientProvider>
   );
 };

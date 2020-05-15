@@ -7,4 +7,3 @@ build
 coverage
 
 babel.config.js
-types/@xmpp

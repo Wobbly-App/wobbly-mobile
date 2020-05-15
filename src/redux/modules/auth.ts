@@ -1,14 +1,17 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import * as SecureStore from 'expo-secure-store';
 
+import WobblyClient from '../../common/WobblyClient';
 import { AppThunk } from '../store';
 
-const SECURE_STORAGE_JID = 'jid';
-const SECURE_STORAGE_PASSWORD = 'password';
+const SECURE_STORAGE_DOMAIN = 'credentials/domain';
+const SECURE_STORAGE_ACCESS_TOKEN = 'credentials/access_token';
+const SECURE_STORAGE_REFRESH_TOKEN = 'credentials/refresh_token';
 
-interface Credentials {
-  jid: string;
-  password: string;
+export interface Credentials {
+  domain: string;
+  accessToken: string;
+  refreshToken: string;
 }
 interface AuthState {
   credentials?: Credentials;
@@ -48,34 +51,60 @@ export default reducer;
 // Thunks
 export const loadCredentials = (): AppThunk => async (dispatch) => {
   try {
-    const jid = await SecureStore.getItemAsync(SECURE_STORAGE_JID);
-    const password = await SecureStore.getItemAsync(SECURE_STORAGE_PASSWORD);
-    if (!jid || !password) {
+    const domain = await SecureStore.getItemAsync(SECURE_STORAGE_DOMAIN);
+    const accessToken = await SecureStore.getItemAsync(
+      SECURE_STORAGE_ACCESS_TOKEN,
+    );
+    const refreshToken = await SecureStore.getItemAsync(
+      SECURE_STORAGE_REFRESH_TOKEN,
+    );
+    if (!domain || !accessToken || !refreshToken) {
       throw new Error();
     }
-    dispatch(receivedCredentials({ jid, password }));
+    dispatch(receivedCredentials({ domain, accessToken, refreshToken }));
   } catch {
     // No credentials found
     dispatch(clearedCredentials());
   }
 };
 
-export const login = (jid: string, password: string): AppThunk => async (
-  dispatch,
-) => {
-  try {
-    await SecureStore.setItemAsync(SECURE_STORAGE_JID, jid);
-    await SecureStore.setItemAsync(SECURE_STORAGE_PASSWORD, password);
-    dispatch(receivedCredentials({ jid, password }));
-  } catch {
-    dispatch(clearedCredentials());
-  }
+export const login = (
+  domain: string,
+  email: string,
+  password: string,
+): AppThunk => (dispatch) => {
+  WobblyClient.login(domain, email, password)
+    .then((json) => {
+      const accessToken = json.data.access_token;
+      const refreshToken = json.data.refresh_token;
+      dispatch(receivedCredentials({ domain, accessToken, refreshToken }));
+    })
+    .catch(() => {
+      dispatch(clearedCredentials());
+    });
+};
+
+export const signup = (
+  domain: string,
+  email: string,
+  password: string,
+): AppThunk => (dispatch) => {
+  WobblyClient.signup(domain, email, password)
+    .then((json) => {
+      const accessToken = json.data.access_token;
+      const refreshToken = json.data.refresh_token;
+      dispatch(receivedCredentials({ domain, accessToken, refreshToken }));
+    })
+    .catch(() => {
+      dispatch(clearedCredentials());
+    });
 };
 
 export const logout = (): AppThunk => async (dispatch) => {
   try {
-    await SecureStore.deleteItemAsync(SECURE_STORAGE_JID);
-    await SecureStore.deleteItemAsync(SECURE_STORAGE_PASSWORD);
+    await SecureStore.deleteItemAsync(SECURE_STORAGE_DOMAIN);
+    await SecureStore.deleteItemAsync(SECURE_STORAGE_ACCESS_TOKEN);
+    await SecureStore.deleteItemAsync(SECURE_STORAGE_REFRESH_TOKEN);
     dispatch(clearedCredentials());
   } catch {
     // TODO: handle logout failure

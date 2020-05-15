@@ -3,9 +3,10 @@ import { Formik, FormikProps } from 'formik';
 import React from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { ConnectedProps, connect } from 'react-redux';
+import * as Yup from 'yup';
 
 import { config } from '../../common/config';
-import { login } from '../../redux/modules/auth';
+import { signup } from '../../redux/modules/auth';
 import { FormErrors, FormField, WobblyText } from '../atoms';
 import WobblyButton, { Intent } from '../atoms/WobblyButton';
 
@@ -23,33 +24,47 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatch = {
-  login,
+  signup,
 };
 const connector = connect(undefined, mapDispatch);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export interface LoginFormFields {
+export interface SignupFormFields {
   domain: string;
   email: string;
   password: string;
+  passwordConfirmation: string;
 }
 
-const LoginScreen: React.FC<PropsFromRedux> = ({ login }) => {
-  const handleSubmit = (values: LoginFormFields) => {
-    login(values.domain, values.email, values.password);
+const SignupScreen: React.FC<PropsFromRedux> = ({ signup }) => {
+  const handleSubmit = (values: SignupFormFields) => {
+    signup(values.domain, values.email, values.password);
   };
   const navigation = useNavigation();
+
   return (
     <SafeAreaView style={styles.container}>
       <WobblyText title2={true} style={styles.welcomeHeading}>
         Login
       </WobblyText>
       <Formik
-        initialValues={{ domain: config.backendUrl, email: '', password: '' }}
+        initialValues={{
+          domain: config.backendUrl,
+          email: '',
+          password: '',
+          passwordConfirmation: '',
+        }}
         onSubmit={handleSubmit}
-        validateOnChange={false}
+        validationSchema={Yup.object({
+          domain: Yup.string().required(),
+          email: Yup.string().email().required(),
+          password: Yup.string().min(8).required(),
+          passwordConfirmation: Yup.string()
+            .oneOf([Yup.ref('password'), null])
+            .required(),
+        })}
       >
-        {(formikBag: FormikProps<LoginFormFields>) => (
+        {(formikBag: FormikProps<SignupFormFields>) => (
           <View>
             <FormErrors errors={Object.values(formikBag.errors)} />
             <FormField
@@ -72,22 +87,31 @@ const LoginScreen: React.FC<PropsFromRedux> = ({ login }) => {
               secureTextEntry={true}
               placeholder="Password"
             />
+            <FormField
+              autoCapitalize="none"
+              onChangeText={formikBag.handleChange('passwordConfirmation')}
+              value={formikBag.values.passwordConfirmation}
+              secureTextEntry={true}
+              placeholder="Confirm password"
+            />
             <WobblyButton
-              text="Log in"
+              text="Sign up"
               isLoading={false}
               intent={Intent.PRIMARY}
               onPress={formikBag.handleSubmit}
               disabled={false}
             />
+            <WobblyButton
+              text="Cancel"
+              onPress={() => navigation.goBack()}
+              disabled={false}
+              minimal={true}
+            />
           </View>
         )}
       </Formik>
-      <WobblyButton
-        onPress={() => navigation.navigate('Signup')}
-        text="Sign up"
-      />
     </SafeAreaView>
   );
 };
 
-export default connector(LoginScreen);
+export default connector(SignupScreen);

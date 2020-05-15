@@ -15,7 +15,7 @@ function getPackagerBaseUrl() {
 
 export const config = {
   // default values unless overridden by app.json
-  backendUrl: `${getPackagerBaseUrl()}:5280`,
+  backendUrl: `${getPackagerBaseUrl()}:4000`,
   // values specified in expo.extra field of app.json
   ...Constants.manifest.extra,
 };
