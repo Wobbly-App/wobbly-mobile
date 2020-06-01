@@ -34,7 +34,7 @@
     "@reduxjs/toolkit": "^1.2.5",
     "@xmpp/client": "^0.11.1",
     "@xmpp/debug": "^0.11.0",
-    "expo": "^37.0.0",
+    "expo": "^37.0.12",
     "expo-constants": "~9.0.0",
     "expo-font": "~8.1.0",
     "expo-random": "~8.1.0",
