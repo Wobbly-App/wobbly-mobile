@@ -72,7 +72,7 @@
     "@types/uuid": "^7.0.0",
     "@typescript-eslint/eslint-plugin": "^2.22.0",
     "@typescript-eslint/parser": "^2.22.0",
-    "babel-preset-expo": "^8.1.0",
+    "babel-preset-expo": "^8.2.1",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-import": "^2.20.1",
