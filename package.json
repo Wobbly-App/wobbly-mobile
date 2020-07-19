@@ -40,7 +40,7 @@
     "expo-random": "~8.1.0",
     "expo-secure-store": "~8.1.0",
     "formik": "^2.1.4",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.24.0",
     "react": "~16.13.0",
     "react-dom": "~16.13.0",
