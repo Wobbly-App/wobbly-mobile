@@ -69,7 +69,7 @@
     "@types/react": "^16.9.11",
     "@types/react-native": "^0.62.8",
     "@types/react-redux": "^7.1.7",
-    "@types/uuid": "^7.0.0",
+    "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^2.22.0",
     "@typescript-eslint/parser": "^2.22.0",
     "babel-preset-expo": "^8.1.0",
