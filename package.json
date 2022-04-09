@@ -41,7 +41,7 @@
     "expo-secure-store": "~8.1.0",
     "formik": "^2.1.4",
     "lodash": "^4.17.21",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "react": "~16.13.0",
     "react-dom": "~16.13.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
